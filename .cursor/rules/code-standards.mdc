@@ -1,0 +1,23 @@
+## Padrões de Codificação
+
+- **Linguagem:** Todo o código-fonte deve ser escrito em inglês.
+- **Nomenclatura:**
+    - `camelCase` para métodos, funções e variáveis.
+    - `PascalCase` para classes e interfaces.
+    - `kebab-case` para arquivos e diretórios.
+- **Clareza:**
+    - Evite abreviações e nomes excessivamente longos (máximo de 30 caracteres).
+    - Declare constantes para números mágicos para melhorar a legibilidade.
+- **Funções e Métodos:**
+    - Devem ter uma ação clara e bem definida, refletida em um nome que comece com um verbo.
+    - Evite passar mais de 3 parâmetros; use objetos quando necessário.
+    - Evite efeitos colaterais: uma função deve realizar uma mutação ou uma consulta, nunca ambos.
+    - Evite aninhamento de mais de dois `if/else`; prefira *early returns*.
+    - Não use *flag parameters*; extraia para funções específicas.
+    - Mantenha métodos com no máximo 50 linhas e classes com no máximo 300 linhas.
+- **Estrutura e Design:**
+    - Aplique o Princípio da Inversão de Dependência para recursos externos.
+    - Evite linhas em branco desnecessárias dentro de funções.
+    - Evite comentários; o código deve ser autoexplicativo.
+    - Declare uma variável por linha, o mais próximo possível de seu uso.
+    - Prefira composição sobre herança.

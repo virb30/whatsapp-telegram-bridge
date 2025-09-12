@@ -1,0 +1,4 @@
+description="Gera regras para a ferramenta desejada baseado nas regras documentadas no projeto"
+prompt="""
+@.cursor/commands/generate-rules.md
+"""

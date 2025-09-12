@@ -1,0 +1,5 @@
+description="Gera tarefas a partir de um PRD e da Especificação técnica da funcionalidade"
+prompt="""
+@.cursor/commands/create-tasks.md
+"""
+

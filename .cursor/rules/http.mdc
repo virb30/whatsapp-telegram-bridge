@@ -1,0 +1,23 @@
+## REST/HTTP
+
+- **Framework:** Utilize `express` para mapear os endpoints.
+- **Padrão REST:**
+    - Use o padrão REST para consultas, com nomes de recursos em inglês e no plural (`/playlists/:playlistId/videos`).
+    - Recursos e verbos compostos devem usar `kebab-case` (`scheduled-events`, `process-payment`).
+    - Evite endpoints com mais de 3 níveis de aninhamento.
+- **Mutações:** Use `POST` com verbos para ações (`/users/:userId/change-password`).
+- **Payload:** O formato do payload deve ser JSON.
+- **Segurança:** Valide autenticação e autorização em todos os endpoints.
+- **Status de Retorno:**
+    - `200`: Sucesso.
+    - `404`: Recurso não encontrado.
+    - `500`: Erro inesperado.
+    - `422`: Erro de negócio.
+    - `400`: Requisição mal formatada.
+    - `401`: Não autenticado.
+    - `403`: Não autorizado.
+- **Documentação:** Documente os endpoints com OpenAPI.
+- **Performance:**
+    - Implemente paginação (`limit` e `offset`) para consultas complexas.
+    - Implemente *partial response* para consultas com grande volume de dados.
+- **Chamadas Externas:** Utilize `axios` para chamadas a APIs externas.

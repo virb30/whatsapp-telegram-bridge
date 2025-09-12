@@ -1,0 +1,40 @@
+---
+globs: *.ts
+alwaysApply: false
+---
+## Node.js/JavaScript/TypeScript
+
+- **Linguagem:** Todo o código-fonte deve ser escrito em TypeScript.
+- **Gerenciamento de Dependências:** Utilize `yarn` como ferramenta padrão.
+- **Tipagem:**
+    - Instale os `types` das bibliotecas (`@types/jest`).
+    - Valide a tipagem antes de concluir uma tarefa.
+    - Nunca utilize `any`; crie ou utilize tipos existentes.
+- **Variáveis:**
+    - Use `const` em vez de `let` sempre que possível.
+    - Nunca use `var`.
+- **Classes:** Declare propriedades como `private` ou `readonly`.
+- **Arrays:** Prefira `find`, `filter`, `map`, e `reduce` em vez de `for` e `while`.
+- **Assincronismo:** Use `async/await` para lidar com `Promises`.
+- **Módulos:**
+    - Use `import/export` em vez de `require/module.exports`.
+    - Use `export default` para arquivos com uma única exportação.
+    - Evite dependências circulares.
+## Node.js/JavaScript/TypeScript
+
+- **Linguagem:** Todo o código-fonte deve ser escrito em TypeScript.
+- **Gerenciamento de Dependências:** Utilize `yarn` como ferramenta padrão.
+- **Tipagem:**
+    - Instale os `types` das bibliotecas (`@types/jest`).
+    - Valide a tipagem antes de concluir uma tarefa.
+    - Nunca utilize `any`; crie ou utilize tipos existentes.
+- **Variáveis:**
+    - Use `const` em vez de `let` sempre que possível.
+    - Nunca use `var`.
+- **Classes:** Declare propriedades como `private` ou `readonly`.
+- **Arrays:** Prefira `find`, `filter`, `map`, e `reduce` em vez de `for` e `while`.
+- **Assincronismo:** Use `async/await` para lidar com `Promises`.
+- **Módulos:**
+    - Use `import/export` em vez de `require/module.exports`.
+    - Use `export default` para arquivos com uma única exportação.
+    - Evite dependências circulares.

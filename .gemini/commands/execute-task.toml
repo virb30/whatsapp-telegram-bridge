@@ -1,0 +1,5 @@
+description="Identifica a próxima tarefa disponível e a implementa conforme especificado"
+prompt="""
+@.cursor/commands/execute-task.md
+"""
+

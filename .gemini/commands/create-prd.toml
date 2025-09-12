@@ -1,0 +1,4 @@
+description="Gera um PRD a partir de um problema a ser resolvido"
+prompt="""
+@.cursor/commands/create-prd.md
+"""

@@ -1,0 +1,5 @@
+description="Gera uma Especificação técnica a partir de um PRD"
+prompt="""
+@.cursor/commands/create-techspec.md
+"""
+

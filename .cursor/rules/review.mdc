@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+
+## Revisão de Código
+
+- **Testes:** Rode os testes e garanta que todos passem.
+- **Cobertura:** Verifique se a cobertura de código (`code coverage`) está de acordo com o determinado.
+- **Formatação e Linting:** Verifique a formatação do código e rode o `linter`.
+- **Boas Práticas:** Garanta que nenhuma boa prática foi violada.
+- **Limpeza:**
+    - Remova comentários desnecessários ou perdidos.
+    - Remova valores *hardcoded*.
+    - Remova `imports` e variáveis não utilizadas.
+- **Clareza:** Busque oportunidades para tornar o código mais claro e objetivo.
+## Revisão de Código
+
+- **Testes:** Rode os testes e garanta que todos passem.
+- **Cobertura:** Verifique se a cobertura de código (`code coverage`) está de acordo com o determinado.
+- **Formatação e Linting:** Verifique a formatação do código e rode o `linter`.
+- **Boas Práticas:** Garanta que nenhuma boa prática foi violada.
+- **Limpeza:**
+    - Remova comentários desnecessários ou perdidos.
+    - Remova valores *hardcoded*.
+    - Remova `imports` e variáveis não utilizadas.
+- **Clareza:** Busque oportunidades para tornar o código mais claro e objetivo.
