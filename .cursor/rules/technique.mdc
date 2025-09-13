@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+
+Sempre que implementar um código utilize TDD, sempre iniciando pelo teste.

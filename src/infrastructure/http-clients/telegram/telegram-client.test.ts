@@ -1,5 +1,7 @@
 import { TelegramClient } from './telegram-client';
-import { MessageDTO } from '../../../application/dtos/message.dto';
+import { Message } from '../../../domain/entities/message.entity';
+import { ContactId } from '../../../domain/value-objects/contact-id.vo';
+import { GroupId } from '../../../domain/value-objects/group-id.vo';
 import { Telegraf } from 'telegraf';
 
 jest.mock('telegraf', () => ({ Telegraf: jest.fn() }));
@@ -86,7 +88,7 @@ describe('TelegramClient', () => {
 
     it('should throw error when client is not initialized', async () => {
       const uninitializedClient = new TelegramClient();
-      const message: MessageDTO = { from: 'test', text: 'Hello' };
+      const message = new Message({ id: 'm-1', from: ContactId.create('test'), to: GroupId.create('g-1'), body: 'Hello' });
 
       await expect(uninitializedClient.sendMessage('123', message)).rejects.toThrow(
         'Telegram client not initialized'
@@ -94,7 +96,7 @@ describe('TelegramClient', () => {
     });
 
     it('should send text message successfully', async () => {
-      const message: MessageDTO = { from: 'test', text: 'Hello World' };
+      const message = new Message({ id: 'm-2', from: ContactId.create('test'), to: GroupId.create('g-1'), body: 'Hello World' });
       mockBot.telegram.sendMessage.mockResolvedValue({ message_id: 1 });
 
       await telegramClient.sendMessage('123', message);
@@ -103,7 +105,7 @@ describe('TelegramClient', () => {
     });
 
     it('should send image message successfully', async () => {
-      const message: MessageDTO = { from: 'test', imageUrl: 'http://example.com/image.jpg' };
+      const message = new Message({ id: 'm-3', from: ContactId.create('test'), to: GroupId.create('g-1'), mediaUrl: 'http://example.com/image.jpg' });
       mockBot.telegram.sendPhoto.mockResolvedValue({ message_id: 1 });
 
       await telegramClient.sendMessage('123', message);
@@ -112,11 +114,7 @@ describe('TelegramClient', () => {
     });
 
     it('should send both text and image with text as caption', async () => {
-      const message: MessageDTO = {
-        from: 'test',
-        text: 'Check this out',
-        imageUrl: 'http://example.com/image.jpg'
-      };
+      const message = new Message({ id: 'm-4', from: ContactId.create('test'), to: GroupId.create('g-1'), body: 'Check this out', mediaUrl: 'http://example.com/image.jpg' });
       mockBot.telegram.sendMessage.mockResolvedValue({ message_id: 1 });
       mockBot.telegram.sendPhoto.mockResolvedValue({ message_id: 2 });
 
@@ -126,8 +124,8 @@ describe('TelegramClient', () => {
       expect(mockBot.telegram.sendPhoto).toHaveBeenCalledWith('123', 'http://example.com/image.jpg', { caption: 'Check this out' });
     });
 
-    it('should send link as text message', async () => {
-      const message: MessageDTO = { from: 'test', link: 'http://example.com' };
+    it('should send link (as text body) successfully', async () => {
+      const message = new Message({ id: 'm-5', from: ContactId.create('test'), to: GroupId.create('g-1'), body: 'http://example.com' });
       mockBot.telegram.sendMessage.mockResolvedValue({ message_id: 1 });
 
       await telegramClient.sendMessage('123', message);
@@ -136,7 +134,7 @@ describe('TelegramClient', () => {
     });
 
     it('should handle API errors gracefully', async () => {
-      const message: MessageDTO = { from: 'test', text: 'Hello' };
+      const message = new Message({ id: 'm-6', from: ContactId.create('test'), to: GroupId.create('g-1'), body: 'Hello' });
       const apiError = new Error('API Error');
       (apiError as any).code = 401;
 

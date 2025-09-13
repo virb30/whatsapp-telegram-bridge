@@ -1,6 +1,6 @@
 import { Telegraf } from 'telegraf';
 import { ITelegramClient } from '../../../application/interfaces/telegram-client.interface';
-import { MessageDTO } from '../../../application/dtos/message.dto';
+import { Message } from '../../../domain/entities/message.entity';
 import { TelegramChatId, TelegramError } from './telegram.types';
 
 type TelegrafLike = {
@@ -34,23 +34,22 @@ export class TelegramClient implements ITelegramClient {
     }
   }
 
-  public async sendMessage(chatId: TelegramChatId, message: MessageDTO): Promise<void> {
+  public async sendMessage(chatId: TelegramChatId, message: Message): Promise<void> {
     if (!this.bot) {
       throw new Error('Telegram client not initialized. Call initialize() first.');
     }
 
     try {
-      if (message.text) {
-        await this.sendText(chatId, message.text);
+      const text = message.body;
+      const mediaUrl = message.mediaUrl;
+
+      if (text) {
+        await this.sendText(chatId, text);
       }
 
-      if (message.imageUrl) {
-        const caption = message.text ? message.text : undefined;
-        await this.sendImage(chatId, message.imageUrl, caption);
-      }
-
-      if (message.link) {
-        await this.sendText(chatId, message.link);
+      if (mediaUrl) {
+        const caption = text ? text : undefined;
+        await this.sendImage(chatId, mediaUrl, caption);
       }
     } catch (error) {
       throw this.handleTelegramError(error);

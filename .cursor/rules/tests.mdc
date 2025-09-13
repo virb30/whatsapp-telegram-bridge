@@ -11,6 +11,7 @@
     - Siga o princípio *Arrange, Act, Assert* (ou *Given, When, Then*).
     - Testes devem ser independentes.
     - Use *mocks* para dependências como `Date` para garantir a repetibilidade.
+    - Use TDD (Red green refactor) para toda implementação
 - **Escopo dos Testes:**
     - **Endpoints HTTP:** Testes de integração para o fluxo principal e alternativo, focando em status code e mensagens de erro.
     - **Use Cases:** Teste os fluxos principais e pelo menos um alternativo que lance exceções. Use *stubs* para dependências externas.

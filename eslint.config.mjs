@@ -1,5 +1,6 @@
 import tseslint from "typescript-eslint";
 import { defineConfig } from "eslint/config";
+import globals from "globals";
 
 const tsRecommendedInSrc = tseslint.configs.recommended.map((conf) => ({
   ...conf,
@@ -24,7 +25,7 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: {
-        ...require('globals').jest,
+        ...globals.jest,
       },
     },
   },
