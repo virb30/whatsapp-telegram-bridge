@@ -32,7 +32,7 @@ export TELEGRAM_BOT_TOKEN="seu_token_do_bot_aqui"
 ## Uso Básico
 
 ```typescript
-import { TelegramClient } from './infrastructure/http-clients/telegram/telegram-client';
+import { TelegramClient } from './infrastructure/clients/telegram/telegram.client';
 import { MessageDTO as Message } from '../../application/dtos/message.dto';
 
 // Criar instância do cliente

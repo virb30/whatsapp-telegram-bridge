@@ -1,4 +1,4 @@
-import { TelegramClient } from './telegram-client';
+import { TelegramClient } from './telegram.client';
 import { Message } from '../../../domain/entities/message.entity';
 import { ContactId } from '../../../domain/value-objects/contact-id.vo';
 import { GroupId } from '../../../domain/value-objects/group-id.vo';
@@ -35,7 +35,7 @@ describe('TelegramClient', () => {
     };
 
     const TelegrafMock = Telegraf as unknown as jest.Mock;
-    TelegrafMock.mockImplementation(() => mockBot as any);
+    TelegrafMock.mockImplementation(() => mockBot as unknown as never);
   });
 
   afterEach(() => {
@@ -135,8 +135,8 @@ describe('TelegramClient', () => {
 
     it('should handle API errors gracefully', async () => {
       const message = new Message({ id: 'm-6', from: ContactId.create('test'), to: GroupId.create('g-1'), body: 'Hello' });
-      const apiError = new Error('API Error');
-      (apiError as any).code = 401;
+      const apiError = new Error('API Error') as Error & { code?: number };
+      apiError.code = 401;
 
       mockBot.telegram.sendMessage.mockRejectedValue(apiError);
 
@@ -199,8 +199,8 @@ describe('TelegramClient', () => {
     });
 
     it('should handle invalid token error (401)', async () => {
-      const error = new Error('Unauthorized');
-      (error as any).code = 401;
+      const error = new Error('Unauthorized') as Error & { code?: number };
+      error.code = 401;
 
       mockBot.telegram.sendMessage.mockRejectedValue(error);
 
@@ -210,8 +210,8 @@ describe('TelegramClient', () => {
     });
 
     it('should handle forbidden error (403)', async () => {
-      const error = new Error('Forbidden');
-      (error as any).code = 403;
+      const error = new Error('Forbidden') as Error & { code?: number };
+      error.code = 403;
 
       mockBot.telegram.sendMessage.mockRejectedValue(error);
 
@@ -221,8 +221,8 @@ describe('TelegramClient', () => {
     });
 
     it('should handle rate limit error (429)', async () => {
-      const error = new Error('Too Many Requests');
-      (error as any).code = 429;
+      const error = new Error('Too Many Requests') as Error & { code?: number };
+      error.code = 429;
 
       mockBot.telegram.sendMessage.mockRejectedValue(error);
 
@@ -232,8 +232,8 @@ describe('TelegramClient', () => {
     });
 
     it('should handle bad request error (400)', async () => {
-      const error = new Error('Bad Request');
-      (error as any).response = { statusCode: 400 };
+      const error = new Error('Bad Request') as Error & { response?: { statusCode?: number } };
+      error.response = { statusCode: 400 };
 
       mockBot.telegram.sendMessage.mockRejectedValue(error);
 
@@ -270,3 +270,5 @@ describe('TelegramClient', () => {
     });
   });
 });
+
+

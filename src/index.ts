@@ -1,8 +1,8 @@
 // Exemplo de uso do TelegramClient
 // Este arquivo demonstra como usar o cliente Telegram implementado
 
-import { TelegramClient } from './infrastructure/http-clients/telegram/telegram-client';
-import { MessageDTO } from './application/dtos/message.dto';
+// import { TelegramClient } from './infrastructure/clients/telegram/telegram.client';
+// import { MessageDTO } from './application/dtos/message.dto';
 
 // Exemplo de uso (comentado para evitar execução acidental)
 /*

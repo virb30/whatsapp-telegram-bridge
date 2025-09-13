@@ -5,7 +5,6 @@ import { IGroupMappingService } from '../interfaces/group-mapping.interface';
 import { Message } from '../../domain/entities/message.entity';
 import { ContactId } from '../../domain/value-objects/contact-id.vo';
 import { GroupId } from '../../domain/value-objects/group-id.vo';
-import { MessageDTO } from '../dtos/message.dto';
 
 export class ForwardMessageUseCase {
   private readonly repository: IMessageRepository;

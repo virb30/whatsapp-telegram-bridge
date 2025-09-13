@@ -30,7 +30,8 @@ export class TelegramClient implements ITelegramClient {
       this.bot = bot;
       await bot.launch();
     } catch (error) {
-      throw new Error('Telegram client initialization failed');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Telegram client initialization failed: ${errorMessage}`);
     }
   }
 
@@ -95,27 +96,23 @@ export class TelegramClient implements ITelegramClient {
 
   private handleTelegramError(error: unknown): Error {
     if (error instanceof Error) {
-      const telegramError = error as TelegramError;
+      const code = (error as TelegramError).code;
+      const statusCode = (error as TelegramError).response?.statusCode;
 
-      if (telegramError.code === 401) {
+      if (code === 401) {
         return new Error('Invalid Telegram bot token');
       }
-
-      if (telegramError.code === 403) {
+      if (code === 403) {
         return new Error('Bot is not authorized to send messages to this chat');
       }
-
-      if (telegramError.code === 429) {
+      if (code === 429) {
         return new Error('Too many requests. Rate limit exceeded');
       }
-
-      if (telegramError.response?.statusCode === 400) {
+      if (statusCode === 400) {
         return new Error('Invalid request parameters');
       }
-
       return error;
     }
-
     return new Error('Unknown Telegram API error');
   }
 
@@ -126,3 +123,5 @@ export class TelegramClient implements ITelegramClient {
     }
   }
 }
+
+
