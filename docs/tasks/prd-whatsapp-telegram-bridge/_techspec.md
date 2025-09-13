@@ -127,4 +127,28 @@ Esta é uma nova aplicação, portanto não há impacto em componentes ou servi�
 
 ### Conformidade com Padrões
 
-O projeto seguirá os padrões de código e revisão definidos nos diretórios `.cursor/rules` e `docs/rules`.
+O projeto seguirá os padrões de código, arquitetura e revisão definidos nos documentos do projeto. As diretrizes principais estão resumidas abaixo.
+
+#### Arquitetura
+
+A arquitetura da aplicação seguirá os princípios da **Clean Architecture** e do **Domain-Driven Design (DDD)**, organizada nas seguintes camadas:
+
+-   **`domain`**: Contém as regras de negócio centrais, incluindo Entidades, Agregados e Value Objects. Esta camada é completamente independente de frameworks e implementações externas.
+-   **`application`**: Orquestra os fluxos de dados e as regras da aplicação através de Use Cases e Interfaces. A comunicação com esta camada deve ocorrer através de DTOs (Data Transfer Objects), sem expor o domínio.
+-   **`infrastructure`**: Responsável pela interação com o mundo externo, como bancos de dados, clientes HTTP e outras APIs. Implementa as interfaces (repositórios, adaptadores) definidas na camada de aplicação.
+
+As dependências de implementações de terceiros serão gerenciadas através do padrão **Adapter** para proteger a aplicação de mudanças externas.
+
+#### Padrões de Codificação
+
+-   **Idioma**: Todo o código-fonte (variáveis, métodos, classes) deve ser escrito em **inglês**.
+-   **Convenções de Nomenclatura**:
+    -   `camelCase` para métodos, funções e variáveis.
+    -   `PascalCase` para classes e interfaces.
+    -   `kebab-case` para nomes de arquivos e diretórios.
+-   **Estrutura de Nomenclatura de Arquivos**: Os arquivos devem seguir o padrão `[name].[type].ts`. Por exemplo, uma interface para um cliente seria `client.interface.ts`.
+-   **Boas Práticas**:
+    -   Funções e métodos devem ter responsabilidade única, nomes verbais e no máximo 3 parâmetros.
+    -   Utilizar *early returns* em vez de aninhamento de `if/else`.
+    -   Preferir composição sobre herança.
+    -   Inverter as dependências para recursos externos (Dependency Inversion Principle).

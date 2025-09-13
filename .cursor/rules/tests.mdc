@@ -2,12 +2,11 @@
 
 - **Ferramentas:**
     - `jest` para cenários de teste e expectativas.
-    - `sinon` para *stubs*, *spies* e *mocks*.
 - **Execução:** Use o comando `yarn test`.
 - **Estrutura:**
     - Mantenha os testes na pasta `/test`, com a extensão `.test.ts`.
     - Testes de integração (HTTP, banco de dados, etc.) devem ficar em `/test/integration`.
-    - Testes de unidade devem ficar em `/test/unit`.
+    - Testes de unidade devem ficar em `/src` junto com a implementação concreta.
 - **Princípios:**
     - Siga o princípio *Arrange, Act, Assert* (ou *Given, When, Then*).
     - Testes devem ser independentes.

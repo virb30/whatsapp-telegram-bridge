@@ -34,3 +34,9 @@ Nunca declare mais de uma variável na mesma linha
 Declare as variáveis o mais próximo possível de onde serão utilizadas
 
 Prefira composição do que herança sempre que possível
+
+Os arquivos deverão ser nomeados em `kebab-case`
+
+O tipo de arquivo deve entrar como "extensão", por exemplo, uma interface deve ser nomeada como `client.interface.ts`
+
+Os arquivos de testes de unidade devem ficar junto com o arquivo de produção.

@@ -13,30 +13,13 @@ blocked_by: ["1.0"]
 <unblocks>"4.0"</unblocks>
 </task_context>
 
-# Tarefa 5.0: Gerenciamento de Configuração
+# Tarefa 5: Implementar o Ponto de Entrada da Aplicação (main.ts)
 
-## Visão Geral
-Esta tarefa consiste em criar a estrutura para o arquivo de configuração `config.json` e a lógica para carregar e validar os mapeamentos de grupo.
+**Descrição:**
+Esta tarefa consiste em criar o ponto de entrada da aplicação (`main.ts`), que será responsável por inicializar os componentes, configurar a injeção de dependência e iniciar o processo de escuta de mensagens.
 
-## Requisitos
-- Um arquivo `config.example.json` deve ser criado para servir como template.
-- Uma classe ou módulo de configuração deve ser criado para carregar o `config.json`.
-- A configuração deve ser validada na inicialização da aplicação.
-- As informações sensíveis (como o token do Telegram) devem ser carregadas de variáveis de ambiente (`.env` file).
-
-## Subtarefas
-- [ ] 5.1 Definir a estrutura do `config.json` para o mapeamento de grupos.
-- [ ] 5.2 Criar um `config.example.json`.
-- [ ] 5.3 Instalar `dotenv` e criar um módulo para carregar a configuração.
-- [ ] 5.4 Implementar a validação do esquema de configuração.
-- [ ] 5.5 Integrar o carregamento da configuração no ponto de entrada da aplicação.
-
-## Sequenciamento
-- Bloqueado por: 1.0
-- Desbloqueia: 4.0
-- Paralelizável: Sim
-
-## Critérios de Sucesso
-- A aplicação carrega o mapeamento de grupos do `config.json`.
-- A aplicação carrega o token do Telegram a partir de variáveis de ambiente.
-- A aplicação falha na inicialização se a configuração for inválida.
+**Critérios de Aceitação:**
+- [ ] Criar o arquivo `src/main.ts`.
+- [ ] O `main.ts` deve instanciar os adaptadores da camada de infraestrutura e os casos de uso da camada de aplicação.
+- [ ] A aplicação deve ser inicializada de forma a começar a monitorar as mensagens do WhatsApp e encaminhá-las para o Telegram.
+- [ ] O `main.ts` deve ser o único local onde as implementações concretas são instanciadas (Composition Root).

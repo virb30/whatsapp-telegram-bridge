@@ -1,6 +1,7 @@
 # Review
 
 Depois de executar cada tarefa rode os testes e garanta que eles funcionem
+Garanta cobertura mínima global de 80% (use `yarn test:ci`)
 
 Verifique o code coverage, ele deve estar de acordo com o que estiver determinado
 

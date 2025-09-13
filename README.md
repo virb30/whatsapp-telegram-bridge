@@ -66,3 +66,9 @@ Os comandos a seguir devem ser executados em um ambiente de desenvolvimento inte
 4.  **Execute as Tarefas**: Utilize os agentes de implementação para começar a codificar, uma tarefa de cada vez.
 
 Este framework visa otimizar o processo de desenvolvimento, reduzir a ambiguidade e garantir que o produto final esteja alinhado com os requisitos iniciais, tudo isso com a ajuda de agentes de IA autônomos e especializados.
+
+## Qualidade e Cobertura
+
+- Rode o linter: `yarn lint`
+- Rode os testes: `yarn test`
+- Valide cobertura mínima (80% global): `yarn test:ci`

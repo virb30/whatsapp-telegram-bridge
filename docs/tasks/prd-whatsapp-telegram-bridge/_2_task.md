@@ -5,39 +5,29 @@ blocked_by: ["1.0"]
 ---
 
 <task_context>
-<domain>engine/integration/telegram</domain>
+<domain>engine/design/architecture</domain>
 <type>implementation</type>
 <scope>core_feature</scope>
 <complexity>medium</complexity>
-<dependencies>external_apis</dependencies>
-<unblocks>"4.0"</unblocks>
+<dependencies></dependencies>
+<unblocks>"3.0", "4.0"</unblocks>
 </task_context>
 
-# Tarefa 2.0: Implementação do Cliente Telegram (`TelegramClient`)
+# Tarefa 2: Definição do Domínio e Camada de Aplicação
 
-## Visão Geral
-Esta tarefa foca na criação de um módulo para interagir com la API de Bot do Telegram. O cliente será responsável por enviar mensagens de texto, imagens e links para um grupo específico do Telegram.
+**Descrição:**
+Esta tarefa foca em estabelecer as fundações da arquitetura da aplicação, definindo as entidades e value objects do domínio, bem como as interfaces (portas) e DTOs da camada de aplicação. Este passo é crucial para garantir um baixo acoplamento e alta coesão, seguindo os princípios do DDD e da Clean Architecture.
 
-## Requisitos
-- O cliente deve usar a biblioteca `telegraf`.
-- O token do bot do Telegram deve ser carregado de variáveis de ambiente.
-- O cliente deve expor um método para enviar mensagens.
-- O cliente deve lidar com erros de API de forma adequada.
+**Critérios de Aceitação:**
 
-## Subtarefas
-- [ ] 2.1 Instalar a dependência `telegraf`.
-- [ ] 2.2 Criar a classe `TelegramClient`.
-- [ ] 2.3 Implementar o método `initialize` para configurar o bot.
-- [ ] 2.4 Implementar o método `sendMessage` que recebe o ID do chat e o conteúdo da mensagem.
-- [ ] 2.5 Adicionar tratamento de erros para falhas de envio.
-- [ ] 2.6 Criar testes unitários para o `TelegramClient` usando mocks.
+**Domínio:**
+- [ ] Criar a entidade `Message`, que representará uma mensagem a ser encaminhada. A entidade deve incluir atributos como `id`, `from`, `to`, `body` e `mediaUrl`.
+- [ ] Criar os value objects necessários, como `GroupId` e `ContactId`, para garantir a consistência e validação dos identificadores.
+- [ ] As entidades e value objects devem estar localizados no diretório `src/domain`.
+- [ ] As regras de negócio, como a validação do formato dos IDs, devem ser implementadas dentro dos value objects.
 
-## Sequenciamento
-- Bloqueado por: 1.0
-- Desbloqueia: 4.0
-- Paralelizável: Sim (pode ser feito em paralelo com a Tarefa 3.0)
-
-## Critérios de Sucesso
-- O `TelegramClient` é capaz de enviar uma mensagem de texto para um grupo do Telegram.
-- O `TelegramClient` é capaz de enviar uma imagem para um grupo do Telegram.
-- Os testes unitários cobrem os principais cenários de sucesso e falha.
+**Aplicação:**
+- [ ] Criar a interface `IMessageRepository` com os métodos necessários para a persistência de mensagens (ex: `save`, `findById`).
+- [ ] Criar as interfaces para os clientes de mensagens, como `IWhatsappClient` e `ITelegramClient`.
+- [ ] Definir os DTOs para entrada e saída dos casos de uso, como `ForwardMessageInput` e `ForwardMessageOutput`.
+- [ ] As interfaces e DTOs devem estar localizados no diretório `src/application`.

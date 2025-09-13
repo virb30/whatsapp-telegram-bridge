@@ -14,7 +14,18 @@ export default defineConfig([
       "**/*.cjs",
       "**/*.mjs",
       "docs/**",
+      "test/**",
     ],
   },
   ...tsRecommendedInSrc,
+  {
+    files: [
+      "src/**/*.test.ts",
+    ],
+    languageOptions: {
+      globals: {
+        ...require('globals').jest,
+      },
+    },
+  },
 ]);
