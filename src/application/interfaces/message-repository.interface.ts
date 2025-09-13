@@ -1,8 +1,8 @@
-import { MessageDTO } from '../dtos/message.dto';
+import { Message } from '../../domain/entities/message.entity';
 
 export interface IMessageRepository {
-  save(message: MessageDTO): Promise<void>;
-  findById(id: string): Promise<MessageDTO | null>;
+  save(message: Message): Promise<void>;
+  findById(id: string): Promise<Message | null>;
 }
 
 
