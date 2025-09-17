@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:ci": "jest --ci --coverage"
+    "test:ci": "jest --ci --coverage",
+    "test:staged": "jest --passWithNoTests"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
@@ -29,6 +30,18 @@
     "typegram": "^5.2.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.43.0"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "yarn eslint --fix",
+      "yarn prettier --write"
+    ],
+    "*.{js,ts,json,md}": [
+      "yarn prettier --write"
+    ],
+    "*.ts": [
+      "yarn tsc --noEmit"
+    ]
   },
   "dependencies": {
     "pino": "^9.9.5",
