@@ -2,153 +2,177 @@
 
 ## Resumo Executivo
 
-Esta especificação técnica detalha a arquitetura e o design para a aplicação de ponte entre WhatsApp e Telegram. A solução será uma aplicação Node.js que se conectará ao WhatsApp utilizando a biblioteca `whatsapp-web.js` e ao Telegram através da API de Bot do Telegram. A aplicação irá monitorar mensagens em grupos específicos do WhatsApp e encaminhá-las para grupos correspondentes no Telegram, com base em um mapeamento definido em um arquivo de configuração. A principal motivação é automatizar a disseminação de informações entre as duas plataformas, eliminando a necessidade de encaminhamento manual.
+Esta especificação técnica detalha a arquitetura e a estratégia de implementação para uma aplicação web multi-usuário que funciona como uma ponte entre o WhatsApp e o Telegram. A solução será construída em uma arquitetura de 3 camadas (Domínio, Aplicação, Infraestrutura) usando NestJS para o backend e React para o frontend. A integração com o WhatsApp será realizada através da biblioteca `whatsapp-web.js`, enquanto a comunicação com o Telegram utilizará a biblioteca `gram.js`, que implementa a API de cliente do Telegram. A persistência de dados será gerenciada com **SQLite utilizando TypeORM** e o padrão de repositório, garantindo uma base de dados mais estruturada e escalável desde o MVP.
 
 ## Arquitetura do Sistema
 
 ### Visão Geral dos Componentes
 
-A arquitetura será composta por três componentes principais:
+A aplicação será dividida nos seguintes componentes principais:
 
--   **Cliente WhatsApp (`WhatsappClient`)**: Responsável por se conectar ao WhatsApp, gerenciar a sessão (incluindo autenticação via QR code), e escutar por novas mensagens nos grupos configurados.
--   **Cliente Telegram (`TelegramClient`)**: Responsável por se conectar à API de Bot do Telegram e enviar mensagens para os grupos de destino.
--   **Encaminhador de Mensagens (`MessageForwarder`)**: O componente central que orquestra o fluxo de mensagens. Ele recebe mensagens do `WhatsappClient`, consulta o mapeamento de grupos e utiliza o `TelegramClient` para encaminhar as mensagens.
+-   **Frontend (React):** Uma interface web para cadastro de usuários, login, conexão com as plataformas (WhatsApp/Telegram), gerenciamento de mapeamentos de grupos e visualização de status.
+-   **Backend (NestJS):** O núcleo da aplicação, responsável pela lógica de negócio, gerenciamento de usuários, orquestração das pontes e exposição de uma API REST para o frontend.
+-   **BridgeService (Serviço de Ponte):** Um serviço de background que escuta ativamente por mensagens nos grupos de WhatsApp mapeados e as encaminha para os grupos correspondentes no Telegram.
+-   **WhatsAppClient:** Um adaptador que encapsula a biblioteca `whatsapp-web.js`, gerenciando a sessão do cliente (incluindo a autenticação via QR code) e a escuta de mensagens.
+-   **TelegramClient:** Um adaptador que encapsula a biblioteca `gram.js`, gerenciando a sessão do cliente (autenticação via número de telefone, código de login e 2FA) e o envio de mensagens.
+-   **Camada de Dados (TypeORM):** Utilizará o TypeORM para gerenciar a conexão com o banco de dados SQLite e fornecerá repositórios para o acesso aos dados das entidades `User` e `Bridge`.
 
-O fluxo de dados será o seguinte:
-1.  O `WhatsappClient` detecta uma nova mensagem de um usuário `fromMe` em um grupo monitorado.
-2.  A mensagem é passada para o `MessageForwarder`.
-3.  O `MessageForwarder` identifica o grupo de destino no Telegram com base no arquivo de configuração.
-4.  O `MessageForwarder` instrui o `TelegramClient` a enviar a mensagem para o grupo de destino no Telegram.
-
-### Execução Contínua
-
-A aplicação será projetada para operar de forma contínua como um serviço de background. Após a configuração inicial e autenticação, nenhuma interação do usuário será necessária. Para ambientes de produção, é recomendado o uso de um gerenciador de processos como o PM2, que garante que a aplicação permaneça em execução e seja reiniciada automaticamente em caso de falhas.
+O fluxo de dados seguirá o padrão: `Frontend -> Backend API -> BridgeService -> WhatsAppClient (escuta) -> BridgeService (processa) -> TelegramClient (envia)`.
 
 ## Design de Implementação
 
 ### Interfaces Principais
 
-As interfaces serão definidas em TypeScript para garantir a clareza e a manutenibilidade do código.
-
 ```typescript
-// Interface para o cliente de mensagens
-interface MessagingClient {
-  initialize(): Promise<void>;
-  onMessage(callback: (message: Message) => void): void;
+// application/interfaces/bridge.interface.ts
+export interface IBridgeService {
+  createBridge(userId: string, whatsappGroupId: string, telegramGroupId: string): Promise<Bridge>;
+  getBridgesForUser(userId: string): Promise<Bridge[]>;
+  deleteBridge(bridgeId: string): Promise<void>;
 }
 
-// Interface para o encaminhador de mensagens
-interface MessageForwarder {
-  forward(message: Message): Promise<void>;
+// application/interfaces/user.interface.ts
+export interface IUserService {
+  createUser(email: string, password_hash: string): Promise<User>;
+  findUserByEmail(email: string): Promise<User | null>;
 }
 
-// Estrutura da mensagem
-interface Message {
-  from: string; // ID do grupo de origem
-  text?: string;
-  imageUrl?: string;
-  link?: string;
+// application/interfaces/whatsapp.interface.ts
+export interface IWhatsAppService {
+  initializeClient(userId: string): Promise<void>;
+  getQRCode(userId: string): Promise<string>;
+  onMessage(userId: string, handler: (message: any) => void): void;
+  getStatus(userId: string): Promise<string>;
+}
+
+// application/interfaces/telegram.interface.ts
+export interface ITelegramService {
+    initializeClient(userId: string, phone: string, code: string, password?: string): Promise<void>;
+    sendMessage(userId: string, groupId: string, message: string): Promise<void>;
+    getStatus(userId: string): Promise<string>;
 }
 ```
 
 ### Modelos de Dados
 
-O principal modelo de dados será a configuração de mapeamento de grupos, que será definida em um arquivo `config.json`.
+```typescript
+// domain/entities/user.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Bridge } from './bridge.entity';
 
-```json
-{
-  "groupMapping": [
-    {
-      "whatsappGroupId": "whatsapp_group_id_1",
-      "telegramGroupId": "telegram_group_id_1"
-    },
-    {
-      "whatsappGroupId": "whatsapp_group_id_2",
-      "telegramGroupId": "telegram_group_id_2"
-    }
-  ]
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  passwordHash: string;
+
+  @Column({ type: 'text', nullable: true })
+  whatsappSession?: string; // Armazenado como JSON string
+
+  @Column({ type: 'text', nullable: true })
+  telegramSession?: string;
+
+  @OneToMany(() => Bridge, bridge => bridge.user)
+  bridges: Bridge[];
+}
+
+// domain/entities/bridge.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { User } from './user.entity';
+
+@Entity()
+export class Bridge {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  userId: string;
+
+  @Column()
+  whatsappGroupId: string;
+
+  @Column()
+  telegramGroupId:string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @ManyToOne(() => User, user => user.bridges)
+  user: User;
 }
 ```
 
 ### Endpoints de API
 
-Para o MVP, a aplicação não exporá nenhum endpoint de API. A interação do usuário será limitada à configuração inicial e à autenticação via console.
+-   `POST /api/v1/users`: Cria um novo usuário.
+-   `POST /api/v1/auth/login`: Autentica um usuário e retorna um token.
+-   `POST /api/v1/bridges`: Cria um novo mapeamento de grupo (ponte).
+-   `GET /api/v1/bridges`: Lista os mapeamentos do usuário autenticado.
+-   `DELETE /api/v1/bridges/:id`: Remove um mapeamento.
+-   `GET /api/v1/whatsapp/qr`: Obtém o QR code para conectar a conta do WhatsApp.
+-   `POST /api/v1/telegram/connect`: Inicia a conexão com o Telegram (envia número, recebe pedido de código).
+-   `POST /api/v1/telegram/signin`: Finaliza a conexão (envia código e senha 2FA, se houver).
+-   `GET /api/v1/status`: Retorna o status das conexões com WhatsApp e Telegram.
 
 ## Pontos de Integração
 
--   **WhatsApp**: A integração será feita através da biblioteca `whatsapp-web.js`, que simula um cliente WhatsApp Web. A autenticação será realizada via QR code.
--   **Telegram**: A integração será feita através da API de Bot do Telegram, utilizando a biblioteca `telegraf` e um token de bot para autenticação.
+-   **WhatsApp:** A integração será feita com a biblioteca `whatsapp-web.js`. A autenticação será via QR code e a sessão será persistida no banco de dados para evitar logins repetidos. O tratamento de erros para desconexão será crucial.
+-   **Telegram:** A integração será via `gram.js`, que utiliza a API de cliente do Telegram. A autenticação exigirá que o usuário forneça seu número de telefone, um código de login enviado ao seu app do Telegram e, potencialmente, uma senha de autenticação de dois fatores (2FA). A sessão do cliente será persistida no banco de dados para evitar logins repetidos.
 
 ## Análise de Impacto
 
-Esta é uma nova aplicação, portanto não há impacto em componentes ou serviços existentes.
+Como este é um projeto greenfield, não há impacto em componentes existentes. Todos os componentes listados serão criados do zero.
+
+| Componente Afetado | Tipo de Impacto | Descrição & Nível de Risco | Ação Requerida |
+| :--- | :--- | :--- | :--- |
+| N/A | N/A | Projeto inicial, sem componentes preexistentes. | N/A |
 
 ## Abordagem de Testes
 
 ### Testes Unitários
 
--   Testes unitários serão criados para o `MessageForwarder`, utilizando mocks para o `WhatsappClient` e o `TelegramClient`.
--   Os cenários de teste incluirão o encaminhamento de diferentes tipos de mensagens (texto, imagem, link) e o tratamento de erros.
+-   **Componentes:** As entidades de domínio, casos de uso da aplicação e serviços de infraestrutura (com mocks) serão testados unitariamente.
+-   **Mocks:** As integrações externas (`WhatsAppClient`, `TelegramClient`) e os repositórios do TypeORM serão mockados para isolar a lógica de negócio.
+-   **Cenários Críticos:** Testar a lógica de criação de usuário, criação de ponte e o fluxo de encaminhamento de mensagens.
 
 ### Testes de Integração
 
--   Testes de integração serão desenvolvidos para verificar a conexão com o WhatsApp e o Telegram em um ambiente de teste.
--   Estes testes enviarão uma mensagem real para um grupo de teste do WhatsApp e verificarão se ela é recebida no grupo de teste do Telegram.
+-   **Componentes:** Testar a interação entre a API do backend e a camada de dados para garantir que os dados são salvos e lidos corretamente no banco de dados SQLite.
+-   **Diretório:** Os testes de integração ficarão em `test/integration/`.
 
 ## Sequenciamento de Desenvolvimento
 
-1.  **Implementação do `TelegramClient`**: Criar o módulo para enviar mensagens para o Telegram.
-2.  **Implementação do `WhatsappClient`**: Criar o módulo para se conectar ao WhatsApp e escutar por mensagens.
-3.  **Implementação do `MessageForwarder`**: Desenvolver a lógica para encaminhar as mensagens.
-4.  **Criação do `config.json`**: Definir a estrutura do arquivo de configuração e a lógica para lê-lo.
-5.  **Integração e Testes E2E**: Conectar todos os componentes e realizar testes de ponta a ponta.
+1.  **Configuração do Backend e Banco de Dados:** Estruturar o projeto NestJS, configurar o TypeORM com o driver do SQLite, definir as entidades e criar os repositórios de dados.
+2.  **Integração com WhatsApp:** Implementar o `WhatsAppClient`, incluindo a geração de QR code, gerenciamento de sessão e escuta de mensagens.
+3.  **Integração com Telegram:** Implementar o `TelegramClient` com `gram.js`, incluindo o fluxo de autenticação de usuário (telefone, código, 2FA) e envio de mensagens.
+4.  **Desenvolvimento do Core:** Implementar os serviços de `User` e `Bridge`, e os endpoints da API.
+5.  **Desenvolvimento do Frontend:** Criar a interface em React para todas as funcionalidades descritas no PRD, incluindo o novo fluxo de login do Telegram.
+6.  **Testes e Implantação:** Realizar testes E2E manuais e automatizados, containerizar a aplicação e implantar no GCP.
 
 ## Monitoramento e Observabilidade
 
--   **Logging**: A biblioteca `pino` será utilizada para logging estruturado. Logs detalhados serão gerados para o fluxo de encaminhamento de mensagens e para erros.
--   **Métricas**: Métricas básicas, como o número de mensagens encaminhadas e o número de erros, serão expostas via logs para monitoramento.
+-   **Métricas:** Expor métricas no formato Prometheus para o número de mensagens encaminhadas, número de usuários ativos e status das conexões.
+-   **Logs:** Utilizar logs estruturados para registrar eventos importantes, como inicialização de cliente, falhas de conexão e mensagens processadas.
 
 ## Considerações Técnicas
 
 ### Decisões Principais
 
--   **Uso do `whatsapp-web.js`**: A escolha desta biblioteca não oficial é uma decisão chave, pois permite a conexão com o WhatsApp sem a necessidade de uma API oficial. Esta abordagem é adequada para o escopo do projeto, mas introduz riscos.
--   **Uso do `telegraf`**: Para a integração com o Telegram, a biblioteca `telegraf` será utilizada. Ela foi escolhida por ser uma biblioteca moderna, com bom suporte a TypeScript e uma comunidade ativa.
+-   **Backend:** NestJS foi escolhido por seu suporte a TypeScript e arquitetura modular, que se alinha bem com os princípios de DDD e Clean Architecture.
+-   **Frontend:** React com Vite foi escolhido para um desenvolvimento rápido e uma experiência de usuário moderna.
+-   **Integração Telegram:** `gram.js` foi escolhido para permitir que a aplicação atue como um usuário normal do Telegram, o que é consistente com a abordagem de integração do WhatsApp e permite interagir com grupos sem a necessidade de ser um administrador ou usar um bot.
+-   **Persistência:** SQLite com TypeORM foi escolhido para fornecer uma solução de banco de dados relacional leve e embarcada desde o MVP, facilitando a estruturação dos dados e a escalabilidade futura, ao mesmo tempo que mantém a configuração simples.
 
 ### Riscos Conhecidos
 
--   **Instabilidade da API do WhatsApp**: A `whatsapp-web.js` pode se tornar instável ou ser descontinuada se o WhatsApp alterar seu funcionamento interno.
--   **Bloqueio pelo WhatsApp ou Telegram**: Existe o risco de a aplicação ser bloqueada por violar os termos de serviço. Para mitigar isso, a aplicação deve simular um comportamento humano (por exemplo, adicionando delays).
-
-### Requisitos Especiais
-
--   **Baixa Latência**: A aplicação deve encaminhar as mensagens com a menor latência possível.
--   **Segurança**: As chaves de API e outras informações sensíveis devem ser gerenciadas de forma segura, utilizando variáveis de ambiente.
+-   **Instabilidade da API de Cliente:** Tanto `whatsapp-web.js` quanto `gram.js` dependem de APIs não oficiais (ou de cliente) que podem mudar ou ser bloqueadas, resultando em instabilidade. A mitigação envolve monitoramento constante, tratamento robusto de erros de sessão e comunicação transparente com os usuários.
+-   **Segurança Multi-usuário:** Isolar os dados e as sessões de cada usuário é crítico. A lógica de acesso a dados deve garantir que um usuário não possa acessar informações de outro.
 
 ### Conformidade com Padrões
 
-O projeto seguirá os padrões de código, arquitetura e revisão definidos nos documentos do projeto. As diretrizes principais estão resumidas abaixo.
-
-#### Arquitetura
-
-A arquitetura da aplicação seguirá os princípios da **Clean Architecture** e do **Domain-Driven Design (DDD)**, organizada nas seguintes camadas:
-
--   **`domain`**: Contém as regras de negócio centrais, incluindo Entidades, Agregados e Value Objects. Esta camada é completamente independente de frameworks e implementações externas.
--   **`application`**: Orquestra os fluxos de dados e as regras da aplicação através de Use Cases e Interfaces. A comunicação com esta camada deve ocorrer através de DTOs (Data Transfer Objects), sem expor o domínio.
--   **`infrastructure`**: Responsável pela interação com o mundo externo, como bancos de dados, clientes HTTP e outras APIs. Implementa as interfaces (repositórios, adaptadores) definidas na camada de aplicação.
-
-As dependências de implementações de terceiros serão gerenciadas através do padrão **Adapter** para proteger a aplicação de mudanças externas.
-
-#### Padrões de Codificação
-
--   **Idioma**: Todo o código-fonte (variáveis, métodos, classes) deve ser escrito em **inglês**.
--   **Convenções de Nomenclatura**:
-    -   `camelCase` para métodos, funções e variáveis.
-    -   `PascalCase` para classes e interfaces.
-    -   `kebab-case` para nomes de arquivos e diretórios.
--   **Estrutura de Nomenclatura de Arquivos**: Os arquivos devem seguir o padrão `[name].[type].ts`. Por exemplo, uma interface para um cliente seria `client.interface.ts`.
--   **Boas Práticas**:
-    -   Funções e métodos devem ter responsabilidade única, nomes verbais e no máximo 3 parâmetros.
-    -   Utilizar *early returns* em vez de aninhamento de `if/else`.
-    -   Preferir composição sobre herança.
-    -   Inverter as dependências para recursos externos (Dependency Inversion Principle).
+A implementação seguirá estritamente as regras definidas em `docs/rules/architecture.md` e `docs/rules/node.md`, incluindo a estrutura de camadas, o uso de TypeScript, e os padrões de código.

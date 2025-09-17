@@ -2,6 +2,8 @@
 
 Todo o código-fonte deve ser escrito em TypeScript
 
+O Backend deverá utilizar nestjs
+
 Utilize yarn como ferramenta padrão para gerenciar dependências e executar scripts
 
 Se necessário, faça a instalação dos types das bibliotecas, por exemplo: jest e @types/jest

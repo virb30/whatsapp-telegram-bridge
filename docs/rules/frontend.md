@@ -1,0 +1,7 @@
+# Frontend
+
+O Frontend deverá ser escrito em React com Vite
+
+Todos os componentes (design system) devem utilizar o shadcn
+
+Toda estilização deve utilizar as classes utilitárias do TailwindCSS

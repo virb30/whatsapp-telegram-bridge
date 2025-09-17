@@ -1,89 +1,97 @@
-# Documento de Requisitos do Produto (PRD): Ponte WhatsApp-Telegram
+# PRD: Ponte WhatsApp-Telegram
 
 ## Visão Geral
 
-Esta aplicação servirá como uma ponte entre o WhatsApp e o Telegram, permitindo que mensagens enviadas em grupos específicos do WhatsApp sejam automaticamente encaminhadas para grupos "espelho" correspondentes no Telegram. A necessidade para esta aplicação surge da utilização de uma ferramenta de terceiros (Devzapp) que se integra apenas com o WhatsApp para agendamento de mensagens. Esta solução permitirá a disseminação de informações de forma consistente em ambas as plataformas, resolvendo o problema de ter que enviar a mesma mensagem para múltiplos canais.
+Este documento descreve os requisitos para uma aplicação web **multi-tenant** que atua como uma ponte entre o WhatsApp e o Telegram. A aplicação permitirá que **vários usuários se cadastrem e configurem suas próprias pontes**, conectando suas contas para encaminhar mensagens automaticamente de grupos específicos do WhatsApp para grupos correspondentes no Telegram. O principal problema que este produto resolve é a necessidade de centralizar ou espelhar a comunicação de um grupo do WhatsApp para um ambiente do Telegram, sem intervenção manual. O público-alvo são usuários que participam de comunidades em ambas as plataformas e desejam manter um fluxo de informação unidirecional entre elas.
 
 ## Objetivos
 
-- Garantir que 100% das mensagens enviadas pelo usuário (fromMe) em grupos específicos do WhatsApp sejam encaminhadas para os grupos correspondentes no Telegram.
-- Manter uma baixa latência no encaminhamento de mensagens.
-- Fornecer um mecanismo para monitorar o status da conexão com o WhatsApp e o Telegram.
-- Garantir a segurança das chaves de API e outras informações sensíveis.
+- **Conectividade Simplificada:** Permitir que o usuário conecte sua conta do WhatsApp (como conta de usuário via QR code) e sua conta do Telegram de forma segura e intuitiva.
+- **Mapeamento Flexível de Grupos:** Oferecer uma interface para que o usuário possa criar, visualizar e gerenciar mapeamentos 1-para-1 entre seus grupos do WhatsApp e do Telegram.
+- **Encaminhamento Automático e Confiável:** Garantir que as mensagens enviadas pelo usuário em um grupo mapeado do WhatsApp sejam encaminhadas para o grupo correspondente do Telegram em tempo real.
+- **Suporte a Múltiplos Usuários (Multi-tenant):** A arquitetura deve ser capaz de gerenciar as sessões, cadastros e mapeamentos de múltiplos usuários de forma independente e segura.
+- **Monitoramento de Status:** Fornecer uma interface clara onde o usuário possa verificar o status da conexão com o WhatsApp e o Telegram.
 
 ## Histórias de Usuário
 
-- Como um administrador de grupo, eu quero configurar quais grupos do WhatsApp são espelhados para quais grupos do Telegram para que eu possa garantir que as mensagens importantes sejam recebidas pelos membros em ambas as plataformas.
-- Como um administrador de grupo, eu quero ter a certeza de que todas as mensagens que eu envio para um grupo do WhatsApp sejam também enviadas para o grupo espelho do Telegram sem intervenção manual.
-- Como um administrador de grupo, eu quero ser notificado se a conexão com o WhatsApp ou Telegram for perdida para que eu possa tomar as medidas necessárias para restabelecê-la.
+- Como um usuário, eu quero me cadastrar na plataforma para poder configurar minha própria ponte de mensagens.
+- Como um usuário, eu quero conectar minha conta do WhatsApp à aplicação usando um QR code, assim como faço no WhatsApp Web, para que a aplicação possa monitorar minhas mensagens.
+- Como um usuário, eu quero autorizar a aplicação a enviar mensagens em meu nome no Telegram, para que ela possa encaminhar o conteúdo do WhatsApp.
+- Como um usuário, eu quero acessar uma interface onde eu possa selecionar um dos meus grupos do WhatsApp e associá-lo a um dos meus grupos do Telegram, criando um "dicionário" de encaminhamento.
+- Como um usuário, sempre que eu enviar uma mensagem (texto, imagem ou link) em um grupo do WhatsApp que foi mapeado, eu quero que essa mesma mensagem apareça no grupo do Telegram associado.
+- Como um usuário, eu quero ter uma página de status para verificar rapidamente se a conexão com o WhatsApp e o Telegram está ativa e funcionando.
+- Como um usuário, quero ser notificado no Telegram se minha conexão com o WhatsApp cair, e no WhatsApp se minha conexão com o Telegram cair, para que eu possa agir rapidamente para reconectar.
 
 ## Funcionalidades Principais
 
-1.  **Conexão com o WhatsApp:**
-    - A aplicação deve se conectar a uma conta do WhatsApp usando um código QR, de forma semelhante ao WhatsApp Web.
-    - A aplicação deve detectar se a sessão do WhatsApp está ativa e solicitar a autenticação do usuário se necessário.
-2.  **Mapeamento de Grupos:**
-    - A aplicação deve permitir que os administradores configurem um mapeamento entre os grupos do WhatsApp e os grupos do Telegram.
-    - Para o MVP, este mapeamento será configurado através de um arquivo de configuração.
-3.  **Escuta e Encaminhamento de Mensagens:**
-    - A aplicação deve escutar continuamente por novas mensagens enviadas pelo usuário (fromMe) nos grupos do WhatsApp configurados.
-    - As mensagens de texto, imagens e links devem ser suportadas.
-    - As mensagens recebidas devem ser encaminhadas para os grupos correspondentes do Telegram.
-4.  **Conexão com o Telegram:**
-    - A aplicação deve se conectar ao Telegram usando a API de Bot do Telegram.
-    - As credenciais da API do Bot do Telegram devem ser armazenadas de forma segura.
+1.  **Autenticação de Usuário e Plataformas:**
+    - **Cadastro na Plataforma:** Sistema de cadastro para que múltiplos usuários possam criar contas.
+    - **WhatsApp:** Integração para geração de QR code e gerenciamento da sessão do cliente (conta de usuário). A sessão deve ser persistida para evitar logins repetidos.
+    - **Telegram:** Conexão com a API do Telegram para permitir o envio de mensagens.
+2.  **Interface de Mapeamento de Grupos:**
+    - Uma página na aplicação web onde o usuário, após conectar ambas as contas, verá uma lista de seus grupos do WhatsApp e do Telegram.
+    - Funcionalidade para criar, visualizar e excluir associações entre um grupo de origem (WhatsApp) e um grupo de destino (Telegram).
+3.  **Serviço de Encaminhamento em Segundo Plano:**
+    - Um processo de backend que permanece ativo, escutando por novas mensagens nos grupos do WhatsApp que foram mapeados.
+    - O serviço deve identificar quando uma mensagem é enviada pelo **usuário administrador da conta (que realizou o vínculo)**.
+    - Ao detectar uma nova mensagem (texto, imagem ou link), o serviço a formata e a envia para o grupo do Telegram correspondente.
+4.  **Dashboard de Status (Interface Web):**
+    - Uma seção na interface que exibe o status da conexão: "Conectado" ou "Desconectado" para o WhatsApp e para o Telegram.
+    - Deve fornecer feedback claro em caso de falha na conexão (ex: "Sessão do WhatsApp expirada, por favor, conecte-se novamente").
 
 ## Experiência do Usuário
 
-- Para o MVP, a interação do usuário será mínima e focada na configuração inicial.
-- A autenticação do WhatsApp será feita através de um código QR exibido no console ou em um arquivo de imagem.
-- O mapeamento de grupos será feito através da edição de um arquivo de configuração (por exemplo, `config.json`).
-- Uma futura iteração poderá incluir uma interface de usuário baseada na web para facilitar a autenticação e o gerenciamento de grupos.
+A interface será minimalista e focada na funcionalidade.
+- **Página Inicial/Login:** Apresentará as opções para cadastro e login, e em seguida para conectar ao WhatsApp e ao Telegram.
+- **Página de Mapeamento:** Uma interface intuitiva de duas colunas (ou similar) para associar os grupos.
+- **Página de Status:** Exibição clara e direta do estado das conexões.
+O fluxo principal do usuário será: 1. Cadastrar/Login -> 2. Conectar WhatsApp -> 3. Conectar Telegram -> 4. Criar Mapeamentos -> 5. Verificar Status.
 
 ## Restrições Técnicas de Alto Nível
 
-- A aplicação dependerá de uma API não oficial do WhatsApp (whatsapp-web.js), o que introduz um risco de instabilidade ou descontinuação.
-- A aplicação deve ser projetada para ter baixa latência e ser resiliente a falhas de conexão.
-- A aplicação deve incluir mecanismos para mitigar o risco de ser bloqueada pelo WhatsApp ou Telegram.
-- As chaves de API e outras informações sensíveis não devem ser expostas no código-fonte ou em logs.
+- **Implantação:** O backend será containerizado e implantado em uma VM no Google Cloud Platform (GCP).
+- **Persistência de Dados (MVP):** Para o MVP, a persistência de dados (sessões de usuário, mapeamentos de grupo) será feita em arquivos no sistema de arquivos local. A sessão do WhatsApp será gerenciada diretamente pela biblioteca `whatsapp-web.js`. O uso de um banco de dados dedicado é planejado para uma versão futura.
+- **Dependências Externas:** A integração com o WhatsApp dependerá de bibliotecas de terceiros (ex: `whatsapp-web.js`), o que introduz um risco de instabilidade. A comunicação com o Telegram será feita através de sua API oficial.
+- **Segurança:** A privacidade e segurança dos dados do usuário são cruciais.
 
 ## Não Objetivos (Fora do Escopo)
 
-- Criação automática de grupos no Telegram a partir da criação de grupos no WhatsApp.
-- Suporte para outros tipos de mídia além de texto, imagens e links no MVP.
-- Uma interface de usuário gráfica para o MVP.
-- Encaminhamento de mensagens de outros usuários que não o `fromMe`.
+- **Encaminhamento Bidirecional:** A aplicação não encaminhará mensagens do Telegram para o WhatsApp.
+- **Encaminhamento de Mensagens de Outros Membros:** O encaminhamento se aplica estritamente às mensagens enviadas pelo usuário que configurou a ponte, não às mensagens de outros membros do grupo.
+- **Gerenciamento de Grupos:** A aplicação não permitirá criar, editar ou deletar grupos do WhatsApp ou Telegram.
 
 ## Plano de Lançamento em Fases
 
-- **MVP:**
-    - Conexão com o WhatsApp via código QR.
-    - Conexão com o Telegram via API de Bot.
-    - Mapeamento de grupos via arquivo de configuração.
-    - Encaminhamento de mensagens de texto, imagens e links.
-    - Logging básico para monitoramento.
-- **Fase 2:**
-    - Uma interface de usuário baseada na web para autenticação do WhatsApp e gerenciamento de grupos.
-    - Monitoramento de status mais robusto com notificações para o administrador.
-    - Suporte para mais tipos de mídia (por exemplo, vídeos, documentos).
-- **Fase 3:**
-    - Otimizações de desempenho e escalabilidade.
-    - Mecanismos avançados de mitigação de bloqueio.
+- **MVP (Web Interface):**
+    - Suporte ao cadastro de múltiplos usuários e login.
+    - Conexão com a conta de usuário do WhatsApp e Telegram.
+    - Interface para o usuário gerenciar seus mapeamentos de grupo (criar, visualizar, excluir).
+    - Encaminhamento de mensagens de **texto, imagens e links**.
+    - Dashboard de status básico na interface web.
+    - *Nota Técnica:* Persistência de sessão e mapeamentos baseada em arquivos.
+- **Fase 2 (V2 - Escalabilidade e Notificações):**
+    - **Migração para Banco de Dados:** Migrar a persistência de dados de arquivos para uma solução de banco de dados robusta.
+    - **Notificações via mensagem (cross-platform):** Enviar uma notificação para o Telegram do usuário se a conexão com o WhatsApp cair, e vice-versa.
+    - Encaminhamento de outros tipos de mídia (vídeos, documentos).
+- **Futuro:**
+    - Otimizações de desempenho e confiabilidade.
+    - Análise de logs para o usuário.
 
 ## Métricas de Sucesso
 
-- Percentual de mensagens do WhatsApp encaminhadas com sucesso para o Telegram (meta: 100%).
-- Latência média de encaminhamento de mensagens (meta: < 5 segundos).
-- Tempo de atividade da aplicação (meta: 99,9%).
-- Número de erros ou falhas de encaminhamento por dia.
+- Número de usuários ativos.
+- Número de mensagens encaminhadas com sucesso por dia.
+- Tempo de atividade (uptime) do serviço de encaminhamento.
+- Taxa de retenção de usuários após a configuração inicial.
 
 ## Riscos e Mitigações
 
-- **Risco:** A API não oficial do WhatsApp se torna instável ou é descontinuada.
-    - **Mitigação:** Pesquisar e ter bibliotecas ou APIs alternativas prontas. Implementar um monitoramento robusto para detectar problemas rapidamente.
-- **Risco:** A aplicação é bloqueada pelo WhatsApp ou Telegram.
-    - **Mitigação:** Implementar um comportamento semelhante ao de um cliente real (por exemplo, delays entre ações). Evitar o envio de um grande volume de mensagens em um curto período de tempo.
-- **Risco:** Envio de mensagens duplicadas.
-    - **Mitigação:** Implementar um mecanismo para rastrear as mensagens que já foram encaminhadas.
-- **Risco:** Vazamento de informações sensíveis.
-    - **Mitigação:** Armazenar chaves de API e outras credenciais de forma segura, utilizando variáveis de ambiente ou um serviço de gerenciamento de segredos.
+- **Risco:** A API não oficial do WhatsApp pode se tornar instável ou ser bloqueada.
+  - **Mitigação:** Utilizar bibliotecas bem mantidas pela comunidade, ter um sistema de monitoramento para detectar falhas rapidamente e comunicar claramente aos usuários sobre possíveis instabilidades.
+- **Risco:** Questões de privacidade e segurança ao manusear dados de múltiplos usuários.
+  - **Mitigação:** Implementar criptografia para dados sensíveis, seguir as melhores práticas de segurança para aplicações multi-tenant e ser transparente com o usuário sobre quais dados são armazenados.
+
+## Questões em Aberto
+
+- **Rate Limiting:** A gestão de limites de taxa (rate limiting) será ignorada no MVP. Como isso será tratado em versões futuras para garantir escalabilidade e evitar bloqueios?
+- **Migração de Dados:** Qual será a estratégia de migração da persistência baseada em arquivos para um banco de dados robusto no futuro?

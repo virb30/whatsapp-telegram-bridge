@@ -15,3 +15,5 @@ Arquivos na camada `infrastructure` são aqueles que fazem alguma interação co
 A aplicação deve estar protegida de implementações de terceiros através do padrão `adapter`.
 
 Sempre que possível utilize padrões de projeto catalogados para simplificar o entendimento.
+
+O repositório deverá ser um monorepo com as pastas `/frontend` e `/backend`

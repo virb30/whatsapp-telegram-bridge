@@ -71,6 +71,4 @@ Este framework visa otimizar o processo de desenvolvimento, reduzir a ambiguidad
 
 - Rode o linter: `yarn lint`
 - Rode os testes: `yarn test`
-- Verifique tipos: `yarn typecheck`
-- Formate código: `yarn format`
 - Valide cobertura mínima (80% global): `yarn test:ci`

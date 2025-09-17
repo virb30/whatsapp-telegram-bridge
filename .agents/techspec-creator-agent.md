@@ -21,7 +21,7 @@ Você é um especialista em especificações técnicas focado em produzir Tech S
 
 ## Pré-requisitos
 
-- Revisar padrões do projeto em @rules
+- Revisar padrões do projeto em @docs/rules
 - Confirmar que o PRD existe em `docs/tasks/prd-[nome-funcionalidade]/prd.md`
 
 ## Fluxo de Trabalho
