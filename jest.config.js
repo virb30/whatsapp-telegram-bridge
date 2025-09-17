@@ -1,7 +1,6 @@
 /** @type {import('jest').Config} */
 module.exports = {
   testEnvironment: 'node',
-  roots: ['<rootDir>/test', '<rootDir>/src'],
   testMatch: ['**/?(*.)+(spec|test).ts'],
   transform: {
     '^.+\\.(ts)$': ['@swc/jest'],
