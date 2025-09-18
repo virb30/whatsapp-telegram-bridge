@@ -13,6 +13,7 @@
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "rootDir": "src",
     "baseUrl": "./",
     "outDir": "./dist",
     "incremental": true,
