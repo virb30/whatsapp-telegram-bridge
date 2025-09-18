@@ -6,7 +6,7 @@
 
 ## Fase 1: Configuração e Integrações Principais
 
-- [ ] 1.0 **Configuração do Backend e Banco de Dados (TypeORM + SQLite) em Monorepo:** Estruturar o projeto NestJS, definir a arquitetura de 3 camadas (Domínio, Aplicação, Infraestrutura) e implementar o `PersistenceService` com base em arquivos JSON.
+- [x] 1.0 **Configuração do Backend e Banco de Dados (TypeORM + SQLite) em Monorepo:** Estruturar o projeto NestJS, definir a arquitetura de 3 camadas (Domínio, Aplicação, Infraestrutura) e implementar o `PersistenceService` com base em arquivos JSON.
 - [ ] 2.0 **Integração com WhatsApp:** Implementar o `WhatsAppClient` usando `whatsapp-web.js`, incluindo geração de QR code, gerenciamento de sessão e escuta de mensagens.
 - [ ] 3.0 **Integração com Telegram:** Implementar o `TelegramClient` com `gram.js`, cobrindo o fluxo completo de autenticação (telefone, código, 2FA) e a funcionalidade de envio de mensagens.
 

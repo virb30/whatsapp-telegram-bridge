@@ -1,5 +1,5 @@
 ---
-status: pending
+status: done
 parallelizable: true
 blocked_by: ["0.0"]
 ---
@@ -26,14 +26,14 @@ Esta tarefa foca em estabelecer a fundação do backend com NestJS dentro de uma
 - Garantir que a conexão com o banco de dados SQLite seja estabelecida na inicialização da aplicação.
 
 ## Subtarefas
-- [ ] 1.1 Criar os diretórios `backend/` e `frontend/` na raiz do projeto.
-- [ ] 1.2 Instalar as dependências necessárias no diretório `backend/`: `@nestjs/typeorm`, `typeorm`, `sqlite3`.
-- [ ] 1.3 Configurar um novo projeto NestJS dentro de `backend/`.
-- [ ] 1.4 Configurar o `TypeOrmModule` no `AppModule` do backend para se conectar a um arquivo de banco de dados SQLite.
-- [ ] 1.5 Atualizar as classes `User` e `Bridge` em `backend/src/domain/entities` para incluir os decoradores do TypeORM (`@Entity`, `@Column`, `@PrimaryGeneratedColumn`, etc.), conforme a especificação técnica.
-- [ ] 1.6 Criar os módulos de funcionalidades (`UserModule`, `BridgeModule`) e importar os repositórios usando `TypeOrmModule.forFeature([User, Bridge])`.
-- [ ] 1.7 Criar testes de integração básicos para verificar se a conexão com o banco de dados é bem-sucedida e se os repositórios podem ser injetados.
-- [ ] 1.8 Adicionar o arquivo do banco de dados SQLite ao `.gitignore`.
+- [x] 1.1 Criar os diretórios `backend/` e `frontend/` na raiz do projeto.
+- [x] 1.2 Instalar as dependências necessárias no diretório `backend/`: `@nestjs/typeorm`, `typeorm`, `sqlite3`.
+- [x] 1.3 Configurar um novo projeto NestJS dentro de `backend/`.
+- [x] 1.4 Configurar o `TypeOrmModule` no `AppModule` do backend para se conectar a um arquivo de banco de dados SQLite.
+- [x] 1.5 Atualizar as classes `User` e `Bridge` em `backend/src/domain/entities` para incluir os decoradores do TypeORM (`@Entity`, `@Column`, `@PrimaryGeneratedColumn`, etc.), conforme a especificação técnica.
+- [x] 1.6 Criar os módulos de funcionalidades (`UserModule`, `BridgeModule`) e importar os repositórios usando `TypeOrmModule.forFeature([User, Bridge])`.
+- [x] 1.7 Criar testes de integração básicos para verificar se a conexão com o banco de dados é bem-sucedida e se os repositórios podem ser injetados.
+- [x] 1.8 Adicionar o arquivo do banco de dados SQLite ao `.gitignore`.
 
 ## Sequenciamento
 - **Bloqueado por:** 0.0 (Configuração de Quality Gates).
