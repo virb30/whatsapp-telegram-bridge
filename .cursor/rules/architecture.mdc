@@ -19,3 +19,7 @@ Arquivos na camada `infrastructure` são aqueles que fazem alguma interação co
 A aplicação deve estar protegida de implementações de terceiros através do padrão `adapter`.
 
 Sempre que possível utilize padrões de projeto catalogados para simplificar o entendimento.
+
+Nunca misturar entidades de domínio com entidades do ORM.
+
+A aplicação deve respeitar a regra da dependência: Camadas internas nunca devem depender de camadas externas, por exemplo: objetos da camada de domínio não devem depender de objetos da camada de aplicação ou infraestrutura.

@@ -1,1 +1,0 @@
-**SEMPRE** responda em português
