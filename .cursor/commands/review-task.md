@@ -12,6 +12,7 @@ Você é um assistente IA responsável por garantir a qualidade do código e con
 ## Localização dos Arquivos
 
 - Tarefa: `./docs/tasks/prd-[$prd]/_[$task]_task.md`
+- Resumo das tarefas: `./docs/tasks/prd-[$prd]/tasks.md`
 - PRD: `./docs/tasks/prd-[$prd]/_prd.md`
 - Tech Spec: `./docs/tasks/prd-[$prd]/_techspec.md`
 
@@ -70,6 +71,8 @@ APENAS APÓS validação bem-sucedida, atualize o arquivo Markdown da tarefa:
   - [x] 1.4 Revisão de código completada
   - [x] 1.5 Pronto para deploy
 ```
+
+Marque também a tarefa como concluída no Markdown do resumo das tarefas.
 
 ## Relatório de Conclusão de Tarefa
 

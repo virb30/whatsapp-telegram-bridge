@@ -72,3 +72,22 @@ Este framework visa otimizar o processo de desenvolvimento, reduzir a ambiguidad
 - Rode o linter: `yarn lint`
 - Rode os testes: `yarn test`
 - Valide cobertura mínima (80% global): `yarn test:ci`
+
+## CI/CD
+
+Segredos necessários no GitHub (Settings > Secrets and variables > Actions):
+
+- GCP_PROJECT_ID: ID do projeto GCP
+- GCP_ARTIFACT_REGISTRY_REGION: região (ex: us-central1)
+- GCP_SA_KEY_JSON: conteúdo JSON da Service Account com permissões em Artifact Registry e Compute
+- GCP_COMPUTE_VM_HOST: IP/DNS da VM de produção
+- GCP_COMPUTE_VM_USER: usuário SSH na VM
+- GCP_COMPUTE_VM_SSH_KEY: chave privada SSH (formato PEM) para acesso à VM
+- VERCEL_TOKEN: token de acesso da Vercel
+- VERCEL_ORG_ID: ID da organização na Vercel
+- VERCEL_PROJECT_ID: ID do projeto na Vercel
+
+Workflows:
+
+- `.github/workflows/backend-ci-cd.yml`: builda e publica imagem do backend no Artifact Registry e faz deploy via SSH na VM. O container lê variáveis do arquivo `~/.config/whatsapp-telegram-backend.env` na VM.
+- `.github/workflows/frontend-ci-cd.yml`: valida o frontend e dispara deploy na Vercel (produção).
