@@ -1,47 +1,49 @@
 ---
 status: pending
-parallelizable: false
-blocked_by: ["4.0"]
+parallelizable: true
+blocked_by: ["3.0"]
 ---
 
 <task_context>
-<domain>application/core</domain>
+<domain>infra/integration</domain>
 <type>implementation</type>
 <scope>core_feature</scope>
-<complexity>medium</complexity>
-<dependencies>nestjs, typeorm</dependencies>
-<unblocks>["6.0", "7.0"]</unblocks>
+<complexity>high</complexity>
+<dependencies>whatsapp-web.js</dependencies>
+<unblocks>["6.0"]</unblocks>
 </task_context>
 
-# Tarefa 5.0: Desenvolvimento do Core da Ponte
+# Tarefa 5.0: Integração com WhatsApp (Backend)
 
 ## Visão Geral
-Implementar a lógica de negócio para o gerenciamento de pontes (mapeamentos de grupo). Isso inclui a criação, listagem e exclusão de pontes, associando-as ao usuário autenticado, usando o `BridgeRepository` do TypeORM.
+Esta tarefa consiste em implementar o `WhatsAppClient`, um adaptador que encapsula a biblioteca `whatsapp-web.js`. O serviço será responsável por gerenciar a conexão com a conta do WhatsApp do usuário, incluindo autenticação via QR code, persistência de sessão e escuta de novas mensagens.
 
 ## Requisitos
-- Permitir que um usuário autenticado crie um mapeamento entre um grupo do WhatsApp e um grupo do Telegram.
-- Permitir que um usuário autenticado liste seus mapeamentos existentes.
-- Permitir que um usuário autenticado exclua um de seus mapeamentos.
+- Implementar a inicialização do cliente WhatsApp.
+- Gerar e expor um QR code para o frontend.
+- Persistir e restaurar a sessão do cliente para evitar logins repetidos.
+- Escutar por novas mensagens nos grupos em que o usuário está.
 
 ## Subtarefas
-- [ ] 5.1 Criar o `BridgeService` em `src/application/services` e injetar o `BridgeRepository`.
-- [ ] 5.2 Implementar o método `createBridge(userId, whatsappGroupId, telegramGroupId)` que salva a nova ponte usando o repositório.
-- [ ] 5.3 Implementar o método `getBridgesForUser(userId)` usando o repositório.
-- [ ] 5.4 Implementar o método `deleteBridge(bridgeId, userId)` que verifica a propriedade antes de excluir.
-- [ ] 5.5 Criar o endpoint `POST /api/v1/bridges` (protegido por autenticação).
-- [ ] 5.6 Criar o endpoint `GET /api/v1/bridges` (protegido por autenticação).
-- [ ] 5.7 Criar o endpoint `DELETE /api/v1/bridges/:id` (protegido por autenticação).
+- [ ] 5.1 Adicionar a dependência `whatsapp-web.js` ao projeto.
+- [ ] 5.2 Criar o `WhatsAppService` em `src/infrastructure/services`.
+- [ ] 5.3 Implementar o método `initializeClient` que lida com a geração de QR code e o evento de 'ready'.
+- [ ] 5.4 Implementar a lógica para salvar a sessão (string JSON) no campo `whatsappSession` da entidade `User` usando o `UserRepository`.
+- [ ] 5.5 Implementar a lógica para carregar a sessão de um arquivo ao inicializar o cliente.
+- [ ] 5.6 Criar um método `onMessage` que recebe um handler para processar as mensagens recebidas.
+- [ ] 5.7 Desenvolver um endpoint na API (`GET /api/v1/whatsapp/qr`) que retorna o QR code como uma string base64.
 
 ## Sequenciamento
-- **Bloqueado por:** 4.0 (Desenvolvimento do Core do Usuário).
-- **Desbloqueia:** 6.0 (Desenvolvimento do Frontend) e 7.0 (Implementação do Serviço de Encaminhamento).
-- **Paralelizável:** Não.
+- **Bloqueado por:** 3.0 (Desenvolvimento do Core do Usuário - Backend).
+- **Desbloqueia:** 6.0 (Desenvolvimento do Frontend - Conexão WhatsApp).
+- **Paralelizável:** Sim.
 
 ## Detalhes de Implementação
-- Todas as operações de `Bridge` devem ser estritamente vinculadas ao `userId` para garantir a segurança e o isolamento dos dados (multi-tenant).
-- O `BridgeService` irá interagir diretamente com o `BridgeRepository` injetado.
+- A sessão do WhatsApp deve ser associada ao `userId` para suportar múltiplos usuários.
+- O tratamento de erros para eventos de desconexão (`disconnected`) é crucial e deve ser logado.
 
 ## Critérios de Sucesso
-- Um usuário autenticado pode criar, listar e deletar suas próprias pontes através da API.
-- A API impede que um usuário acesse ou modifique as pontes de outro usuário.
-- Os dados das pontes são persistidos corretamente no banco de dados SQLite.
+- O frontend consegue obter um QR code da API.
+- Após escanear o QR code, a sessão do WhatsApp é estabelecida e persistida.
+- Em reinicializações do servidor, a sessão é restaurada sem a necessidade de um novo QR code.
+- Novas mensagens enviadas nos grupos do usuário são capturadas pelo `onMessage` handler.

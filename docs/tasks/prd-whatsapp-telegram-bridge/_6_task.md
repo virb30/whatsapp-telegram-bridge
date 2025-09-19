@@ -8,41 +8,37 @@ blocked_by: ["4.0", "5.0"]
 <domain>frontend</domain>
 <type>implementation</type>
 <scope>core_feature</scope>
-<complexity>high</complexity>
+<complexity>medium</complexity>
 <dependencies>react, vite</dependencies>
-<unblocks>[]</unblocks>
+<unblocks>["7.0"]</unblocks>
 </task_context>
 
-# Tarefa 6.0: Desenvolvimento do Frontend (React)
+# Tarefa 6.0: Desenvolvimento do Frontend - Conexão WhatsApp
 
 ## Visão Geral
-Criar a interface de usuário completa com React e Vite, permitindo que os usuários interajam com todas as funcionalidades do backend. Isso inclui páginas para cadastro, login, conexão com WhatsApp e Telegram, gerenciamento de mapeamentos e um dashboard de status.
+Desenvolver a página no frontend para permitir que o usuário conecte sua conta do WhatsApp, exibindo o QR code gerado pelo backend e tratando os eventos de conexão.
 
 ## Requisitos
-- Desenvolver uma Single Page Application (SPA) com React.
-- Implementar rotas para as diferentes seções da aplicação.
-- Integrar com todos os endpoints da API do backend.
-- Fornecer feedback claro ao usuário durante as operações (carregamento, sucesso, erro).
+- Criar uma página dedicada para a conexão com o WhatsApp.
+- Fazer a requisição para o endpoint `GET /api/v1/whatsapp/qr` para obter o QR code.
+- Exibir o QR code para o usuário escanear.
+- Fornecer feedback visual sobre o status da conexão (ex: "Aguardando leitura do QR code", "Conectado com sucesso").
 
 ## Subtarefas
-- [ ] 6.1 Configurar um novo projeto React com Vite.
-- [ ] 6.2 Implementar as páginas de Cadastro e Login e o fluxo de autenticação com JWT.
-- [ ] 6.3 Desenvolver a página de conexão com o WhatsApp, que exibe o QR code recebido da API.
-- [ ] 6.4 Desenvolver o fluxo de conexão com o Telegram, com formulários para número de telefone, código de verificação e senha 2FA.
-- [ ] 6.5 Criar a página de gerenciamento de pontes, permitindo ao usuário criar, visualizar e deletar mapeamentos.
-- [ ] 6.6 Implementar o Dashboard de Status, que consome o endpoint `GET /api/v1/status` para exibir o estado das conexões.
-- [ ] 6.7 Adicionar um gerenciador de estado (como Redux Toolkit ou Zustand) para gerenciar o estado global da aplicação (ex: token de autenticação, status do usuário).
+- [ ] 6.1 Desenvolver a página de conexão com o WhatsApp.
+- [ ] 6.2 Implementar a lógica para buscar e exibir o QR code em base64 como uma imagem.
+- [ ] 6.3 (Opcional) Utilizar WebSockets ou polling para atualizar o status da conexão em tempo real na tela, sem que o usuário precise recarregar a página.
+- [ ] 6.4 Redirecionar o usuário ou atualizar a interface após a conexão ser estabelecida com sucesso.
 
 ## Sequenciamento
-- **Bloqueado por:** 4.0 (Core do Usuário) e 5.0 (Core da Ponte).
-- **Desbloqueia:** Nenhuma.
+- **Bloqueado por:** 4.0 (Frontend - Cadastro e Login), 5.0 (Backend - Integração com WhatsApp).
+- **Desbloqueia:** 7.0 (Backend - Integração com Telegram).
 - **Paralelizável:** Não.
 
 ## Detalhes de Implementação
-- Utilizar uma biblioteca de componentes de UI como Material-UI ou Ant Design para acelerar o desenvolvimento.
-- A comunicação com a API deve ser feita através de um cliente HTTP (ex: Axios) com interceptors para injetar o token JWT nos cabeçalhos.
+- A página deve ser protegida e acessível apenas para usuários autenticados.
+- O QR code pode ser atualizado em intervalos regulares se a biblioteca do backend assim o exigir.
 
 ## Critérios de Sucesso
-- O usuário consegue completar o fluxo de ponta a ponta: cadastro, login, conexão das contas e criação de uma ponte.
-- A interface exibe o status correto das conexões com WhatsApp e Telegram.
-- A aplicação é responsiva e oferece uma boa experiência de usuário em diferentes tamanhos de tela.
+- O usuário consegue visualizar o QR code do WhatsApp na página.
+- A interface informa ao usuário que a conexão foi bem-sucedida após a leitura do QR code.

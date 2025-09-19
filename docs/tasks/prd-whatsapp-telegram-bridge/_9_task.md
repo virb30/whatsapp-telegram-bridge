@@ -1,53 +1,47 @@
 ---
 status: pending
 parallelizable: false
-blocked_by: ["8.0"]
+blocked_by: ["3.0"]
 ---
 
 <task_context>
-<domain>infra/devops</domain>
-<type>configuration</type>
-<scope>ci_cd</scope>
-<complexity>high</complexity>
-<dependencies>github_actions, gcp, vercel</dependencies>
-<unblocks>[]</unblocks>
+<domain>application/core</domain>
+<type>implementation</type>
+<scope>core_feature</scope>
+<complexity>medium</complexity>
+<dependencies>nestjs, typeorm</dependencies>
+<unblocks>["10.0", "11.0"]</unblocks>
 </task_context>
 
-# Tarefa 9.0: Configuração de CI/CD (Backend GCP, Frontend Vercel)
+# Tarefa 9.0: Desenvolvimento do Core da Ponte (Backend)
 
 ## Visão Geral
-Esta tarefa foca na automação do processo de integração contínua e deploy contínuo (CI/CD) para o backend e o frontend. O backend será implantado na GCP via GitHub Actions, enquanto o frontend será implantado na Vercel.
+Implementar a lógica de negócio para o gerenciamento de pontes (mapeamentos de grupo). Isso inclui a criação, listagem e exclusão de pontes, associando-as ao usuário autenticado, usando o `BridgeRepository` do TypeORM.
 
 ## Requisitos
-- Configurar GitHub Actions para o repositório.
-- Automatizar o build da imagem Docker do backend.
-- Automatizar o push da imagem Docker para o Artifact Registry (GCP) ou Docker Hub.
-- Automatizar o deploy do backend para uma VM na GCP via SSH.
-- Configurar o deploy automático do frontend na Vercel.
+- Permitir que um usuário autenticado crie um mapeamento entre um grupo do WhatsApp e um grupo do Telegram.
+- Permitir que um usuário autenticado liste seus mapeamentos existentes.
+- Permitir que um usuário autenticado exclua um de seus mapeamentos.
 
 ## Subtarefas
-- [ ] 9.1 Criar um workflow de GitHub Actions (`.github/workflows/backend-ci-cd.yml`) para o backend.
-- [ ] 9.2 No workflow do backend, configurar os passos para:
-    - Fazer o checkout do código.
-    - Fazer o login no Docker (ou GCP Artifact Registry).
-    - Buildar a imagem Docker do backend (localizado em `backend/`).
-    - Taggear e fazer o push da imagem para o registro de containers.
-    - Conectar via SSH à VM da GCP e executar comandos para atualizar o container (ex: `docker pull`, `docker stop`, `docker rm`, `docker run`).
-- [ ] 9.3 Configurar as variáveis de ambiente e segredos necessários no GitHub Secrets (ex: credenciais GCP, chave SSH, tokens de acesso).
-- [ ] 9.4 Criar um workflow de GitHub Actions (`.github/workflows/frontend-ci-cd.yml`) para o frontend.
-- [ ] 9.5 No workflow do frontend, configurar o deploy automático para a Vercel (geralmente via integração direta da Vercel com o GitHub).
-- [ ] 9.6 Garantir que o deploy do frontend na Vercel seja acionado em push para a branch `main`.
+- [ ] 9.1 Criar o `BridgeService` em `src/application/services` e injetar o `BridgeRepository`.
+- [ ] 9.2 Implementar o método `createBridge(userId, whatsappGroupId, telegramGroupId)` que salva a nova ponte usando o repositório.
+- [ ] 9.3 Implementar o método `getBridgesForUser(userId)` usando o repositório.
+- [ ] 9.4 Implementar o método `deleteBridge(bridgeId, userId)` que verifica a propriedade antes de excluir.
+- [ ] 9.5 Criar o endpoint `POST /api/v1/bridges` (protegido por autenticação).
+- [ ] 9.6 Criar o endpoint `GET /api/v1/bridges` (protegido por autenticação).
+- [ ] 9.7 Criar o endpoint `DELETE /api/v1/bridges/:id` (protegido por autenticação).
 
 ## Sequenciamento
-- **Bloqueado por:** 8.0 (Testes, Containerização e Implantação).
-- **Desbloqueia:** Nenhuma.
+- **Bloqueado por:** 3.0 (Desenvolvimento do Core do Usuário - Backend).
+- **Desbloqueia:** 10.0 (Frontend - Gerenciamento de Pontes), 11.0 (Implementação do Serviço de Encaminhamento).
 - **Paralelizável:** Não.
 
 ## Detalhes de Implementação
-- Para o deploy na GCP, pode-se usar `gcloud compute ssh` ou uma ação de SSH do GitHub Actions.
-- A Vercel geralmente detecta automaticamente projetos React e configura o deploy.
+- Todas as operações de `Bridge` devem ser estritamente vinculadas ao `userId` para garantir a segurança e o isolamento dos dados (multi-tenant).
+- O `BridgeService` irá interagir diretamente com o `BridgeRepository` injetado.
 
 ## Critérios de Sucesso
-- Um push para a branch `main` do repositório aciona automaticamente o build e deploy do backend na GCP.
-- Um push para a branch `main` do repositório aciona automaticamente o deploy do frontend na Vercel.
-- A aplicação (backend e frontend) está acessível e funcionando após o deploy automático.
+- Um usuário autenticado pode criar, listar e deletar suas próprias pontes através da API.
+- A API impede que um usuário acesse ou modifique as pontes de outro usuário.
+- Os dados das pontes são persistidos corretamente no banco de dados SQLite.

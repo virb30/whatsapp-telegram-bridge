@@ -1,50 +1,50 @@
 ---
 status: pending
-parallelizable: false
-blocked_by: ["2.0", "3.0", "5.0"]
+parallelizable: true
+blocked_by: ["3.0"]
 ---
 
 <task_context>
-<domain>application/core</domain>
+<domain>infra/integration</domain>
 <type>implementation</type>
 <scope>core_feature</scope>
 <complexity>high</complexity>
-<dependencies>nestjs, typeorm</dependencies>
-<unblocks>[]</unblocks>
+<dependencies>gram.js</dependencies>
+<unblocks>["8.0"]</unblocks>
 </task_context>
 
-# Tarefa 7.0: Implementação do Serviço de Encaminhamento
+# Tarefa 7.0: Integração com Telegram (Backend)
 
 ## Visão Geral
-Esta é a tarefa central que conecta todas as partes do sistema. Será desenvolvido um serviço de background que escuta as mensagens do `WhatsAppClient`, verifica se a mensagem veio de um grupo mapeado e do usuário correto, e a encaminha para o grupo correspondente no Telegram usando o `TelegramClient`.
+Implementar o `TelegramClient` usando a biblioteca `gram.js` para permitir que a aplicação atue como um cliente de usuário do Telegram. Esta tarefa cobre o complexo fluxo de autenticação (número de telefone, código de verificação, senha 2FA) e a funcionalidade de envio de mensagens para grupos.
 
 ## Requisitos
-- O serviço deve ser iniciado junto com a aplicação NestJS.
-- O serviço deve obter todos os mapeamentos de pontes ativas usando o `BridgeRepository`.
-- Para cada ponte, o serviço deve escutar mensagens no grupo do WhatsApp especificado.
-- Ao receber uma mensagem, deve verificar se o autor é o usuário dono da ponte, consultando o `UserRepository`.
-- Se as condições forem atendidas, a mensagem (texto, imagem ou link) deve ser enviada ao grupo do Telegram correspondente.
+- Implementar a inicialização do cliente Telegram.
+- Gerenciar o fluxo de autenticação interativo.
+- Persistir e restaurar a sessão do cliente.
+- Implementar uma função para enviar mensagens a um grupo específico.
 
 ## Subtarefas
-- [ ] 7.1 Criar um `ForwardingService` em `backend/src/application/services` e injetar o `BridgeRepository` e o `UserRepository`.
-- [ ] 7.2 No início da aplicação (`OnModuleInit`), o serviço deve carregar todas as pontes ativas usando o `BridgeRepository`.
-- [ ] 7.3 Para cada ponte, registrar um listener no `WhatsAppService` para o grupo de WhatsApp correspondente.
-- [ ] 7.4 Implementar a lógica de verificação: checar se a mensagem é de um grupo mapeado e se o `message.author` corresponde ao `userId` da ponte, buscando o usuário no `UserRepository`.
-- [ ] 7.5 Implementar a lógica de encaminhamento: chamar o método `sendMessage` do `TelegramService` com o `telegramGroupId` e o conteúdo da mensagem.
-- [ ] 7.6 Adicionar tratamento para diferentes tipos de mensagem (texto, imagem, link).
-- [ ] 7.7 Implementar logs detalhados para cada mensagem processada, indicando sucesso ou falha no encaminhamento.
+- [ ] 7.1 Adicionar a dependência `gram.js` ao projeto.
+- [ ] 7.2 Criar o `TelegramService` em `src/infrastructure/services`.
+- [ ] 7.3 Implementar o método `initializeClient` que lida com a autenticação.
+- [ ] 7.4 Desenvolver os endpoints da API para o fluxo de login:
+    - `POST /api/v1/telegram/connect` (para enviar o número de telefone).
+    - `POST /api/v1/telegram/signin` (para enviar o código e a senha 2FA).
+- [ ] 7.5 Implementar a lógica para salvar e carregar a sessão do Telegram (`stringSession`) no campo `telegramSession` da entidade `User` usando o `UserRepository`.
+- [ ] 7.6 Criar um método `sendMessage(groupId, message)`.
+- [ ] 7.7 Implementar o tratamento de erros para senhas 2FA incorretas ou códigos de login inválidos.
 
 ## Sequenciamento
-- **Bloqueado por:** 2.0 (Integração com WhatsApp), 3.0 (Integração com Telegram) e 5.0 (Core da Ponte).
-- **Desbloqueia:** Nenhuma.
-- **Paralelizável:** Não.
+- **Bloqueado por:** 3.0 (Desenvolvimento do Core do Usuário - Backend).
+- **Desbloqueia:** 8.0 (Desenvolvimento do Frontend - Conexão Telegram).
+- **Paralelizável:** Sim.
 
 ## Detalhes de Implementação
-- O serviço deve ser robusto a falhas. Se uma das integrações (WhatsApp/Telegram) de um usuário estiver offline, isso não deve afetar o encaminhamento para outros usuários.
-- O encaminhamento de imagens pode exigir o download do buffer da imagem do WhatsApp e o envio desse buffer para o Telegram.
+- A sessão do Telegram (`stringSession`) deve ser associada ao `userId`.
+- O `TelegramService` precisará armazenar temporariamente o `phoneCodeHash` retornado pela API entre as chamadas de `connect` e `signin`.
 
 ## Critérios de Sucesso
-- Mensagens de texto enviadas pelo usuário correto em um grupo mapeado do WhatsApp são encaminhadas para o Telegram.
-- Mensagens de imagem e links também são encaminhadas corretamente.
-- Mensagens de outros usuários no mesmo grupo do WhatsApp não são encaminhadas.
-- O serviço lida graciosamente com erros de conexão ou falhas no envio, registrando logs apropriados.
+- O usuário consegue se autenticar com sucesso através dos endpoints da API.
+- A sessão do Telegram é persistida e restaurada corretamente.
+- O método `sendMessage` envia com sucesso uma mensagem para um grupo do Telegram.
