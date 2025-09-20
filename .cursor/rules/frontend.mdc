@@ -4,7 +4,7 @@ alwaysApply: false
 ---
 # Frontend
 
-O Frontend deverá ser escrito utilizando Nextjs
+O Frontend deverá ser escrito utilizando React e Vite
 
 Todos os componentes (design system) devem utilizar o shadcn
 

@@ -19,14 +19,14 @@ blocked_by: ["3.0"]
 Criar as páginas e a lógica no frontend para que os usuários possam se cadastrar e fazer login na plataforma, integrando com os endpoints de autenticação do backend.
 
 ## Requisitos
-- Desenvolver uma Single Page Application (SPA) com React/Nextjs.
+- Desenvolver uma Single Page Application (SPA) com React e Vite.
 - Implementar rotas para as páginas de Cadastro e Login.
 - Integrar com os endpoints `POST /api/v1/users` e `POST /api/v1/auth/login`.
 - Armazenar o token JWT de forma segura no cliente e utilizá-lo em requisições futuras.
 - Fornecer feedback claro ao usuário durante as operações (carregamento, sucesso, erro).
 
 ## Subtarefas
-- [ ] 4.1 Configurar um novo projeto Nextjs (se ainda não foi feito).
+- [ ] 4.1 Configurar um novo projeto React e vite (se ainda não foi feito).
 - [ ] 4.2 Implementar as páginas de Cadastro e Login com formulários.
 - [ ] 4.3 Configurar um cliente HTTP (ex: Axios) para se comunicar com a API.
 - [ ] 4.4 Implementar a lógica de autenticação para salvar e remover o token JWT (ex: no `localStorage`).
