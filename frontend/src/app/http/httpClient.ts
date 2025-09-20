@@ -1,13 +1,22 @@
-import axios from 'axios';
+import axios, { type InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '../store/auth.store';
 
-export const http = axios.create({});
+const baseURL = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_URL) || '/';
+export const http = axios.create({ baseURL });
 
-http.interceptors.request.use((config) => {
+http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = useAuthStore.getState().token ?? localStorage.getItem('auth_token');
   if (token) {
-    config.headers = config.headers ?? {};
-    (config.headers as any)['Authorization'] = `Bearer ${token}`;
+    if (!config.headers) {
+      // Axios garante headers, mas deixamos defensivo
+      (config as any).headers = {};
+    }
+    const headersAny = config.headers as any;
+    if (typeof headersAny.set === 'function') {
+      headersAny.set('Authorization', `Bearer ${token}`);
+    } else {
+      (config.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+    }
   }
   return config;
 });

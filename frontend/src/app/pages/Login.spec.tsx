@@ -5,12 +5,13 @@ import axios from 'axios';
 import { createAuthStore } from '../store/auth.store';
 import { LoginPage } from './Login';
 
-vi.mock('axios', () => ({
-  default: {
+vi.mock('axios', () => {
+  const instance = {
     post: vi.fn(),
     interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } },
-  },
-}));
+  } as any;
+  return { default: Object.assign(() => instance, { create: vi.fn(() => instance) }) };
+});
 
 describe('LoginPage', () => {
   beforeEach(() => {
@@ -19,7 +20,7 @@ describe('LoginPage', () => {
   });
 
   it('deve permitir login com credenciais válidas e redirecionar', async () => {
-    (axios.post as any).mockResolvedValueOnce({ data: { token: 'tok', user: { id: '1', email: 'a@b.com' } } });
+    (axios as any).create().post.mockResolvedValueOnce({ data: { token: 'tok', user: { id: '1', email: 'a@b.com' } } });
     render(
       <BrowserRouter>
         <LoginPage />
@@ -36,7 +37,7 @@ describe('LoginPage', () => {
   });
 
   it('deve exibir erro quando credenciais inválidas', async () => {
-    (axios.post as any).mockRejectedValueOnce({ response: { data: { message: 'Credenciais inválidas' } } });
+    (axios as any).create().post.mockRejectedValueOnce({ response: { data: { message: 'Credenciais inválidas' } } });
     render(
       <BrowserRouter>
         <LoginPage />

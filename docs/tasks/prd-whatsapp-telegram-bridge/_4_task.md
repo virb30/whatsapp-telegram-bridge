@@ -1,5 +1,5 @@
 ---
-status: pending
+status: concluido
 parallelizable: false
 blocked_by: ["3.0"]
 ---

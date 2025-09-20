@@ -1,4 +1,5 @@
 import { Route, Routes, Link, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { LoginPage } from './pages/Login';
 import { RegisterPage } from './pages/Register';
 import { useAuthStore } from './store/auth.store';
@@ -10,6 +11,12 @@ function PrivateRoute({ children }: { children: JSX.Element }) {
 }
 
 export function App() {
+  const { hydrateFromStorage, hydrateUser } = useAuthStore();
+  useEffect(() => {
+    hydrateFromStorage();
+    // tentar obter dados do usuário caso exista token
+    void hydrateUser();
+  }, []);
   return (
     <div>
       {/* START: routes */}

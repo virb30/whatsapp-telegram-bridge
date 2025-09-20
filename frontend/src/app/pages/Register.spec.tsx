@@ -5,12 +5,13 @@ import axios from 'axios';
 import { createAuthStore } from '../store/auth.store';
 import { RegisterPage } from './Register';
 
-vi.mock('axios', () => ({
-  default: {
+vi.mock('axios', () => {
+  const instance = {
     post: vi.fn(),
     interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } },
-  },
-}));
+  } as any;
+  return { default: Object.assign(() => instance, { create: vi.fn(() => instance) }) };
+});
 
 describe('RegisterPage', () => {
   beforeEach(() => {
@@ -19,7 +20,7 @@ describe('RegisterPage', () => {
   });
 
   it('deve cadastrar e autenticar', async () => {
-    (axios.post as any)
+    (axios as any).create().post
       .mockResolvedValueOnce({ data: { id: '1', email: 'new@b.com' } })
       .mockResolvedValueOnce({ data: { token: 'tok', user: { id: '1', email: 'new@b.com' } } });
 

@@ -1,31 +1,35 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import axios from 'axios';
+import { createAuthStore, useAuthStore } from './auth.store';
 
 vi.mock('axios', () => {
+  const instance = {
+    post: vi.fn(),
+    get: vi.fn(),
+    interceptors: {
+      request: { use: vi.fn() },
+      response: { use: vi.fn() },
+    },
+  } as any;
   return {
-    default: {
+    default: Object.assign(() => instance, {
+      create: vi.fn(() => instance),
       post: vi.fn(),
       get: vi.fn(),
       interceptors: {
         request: { use: vi.fn() },
         response: { use: vi.fn() },
       },
-    },
+    }),
   };
 });
-
-// Importação atrasada para garantir que o mock de axios esteja ativo
-let createAuthStore: typeof import('./auth.store').createAuthStore;
-let useAuthStore: typeof import('./auth.store').useAuthStore;
 
 describe('auth.store', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     // Limpa localStorage antes de cada teste
     localStorage.clear();
-    // Força recarregar o módulo para resetar o estado da store
-    vi.resetModules();
-    ({ createAuthStore, useAuthStore } = await import('./auth.store'));
+    // Reinicia a store
     createAuthStore();
   });
 
@@ -37,7 +41,7 @@ describe('auth.store', () => {
 
   it('deve realizar login com sucesso e persistir o token', async () => {
     const token = 'jwt.token.mock';
-    (axios.post as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+    (axios as any).create().post.mockResolvedValueOnce({
       data: { token, user: { id: 'u1', email: 'test@example.com' } },
     });
 
@@ -52,7 +56,7 @@ describe('auth.store', () => {
   });
 
   it('deve falhar login e expor mensagem de erro', async () => {
-    (axios.post as unknown as ReturnType<typeof vi.fn>).mockRejectedValueOnce({
+    (axios as any).create().post.mockRejectedValueOnce({
       response: { data: { message: 'Credenciais inválidas' } },
     });
 
@@ -67,7 +71,7 @@ describe('auth.store', () => {
 
   it('deve realizar cadastro e autenticar automaticamente', async () => {
     const token = 'jwt.token.created';
-    (axios.post as unknown as ReturnType<typeof vi.fn>)
+    (axios as any).create().post
       .mockResolvedValueOnce({ data: { id: 'u2', email: 'new@example.com' } }) // /users
       .mockResolvedValueOnce({
         data: { token, user: { id: 'u2', email: 'new@example.com' } }, // /auth/login
