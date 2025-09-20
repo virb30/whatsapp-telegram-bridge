@@ -24,8 +24,8 @@ Esta tarefa finaliza o ciclo de desenvolvimento do MVP, focando na qualidade do 
 - Documentar o processo de build e implantação.
 
 ## Subtarefas
-- [ ] 12.1 Configurar o Jest para executar testes unitários e de integração no projeto NestJS.
-- [ ] 12.2 Escrever testes de integração para os fluxos de usuário e ponte, mockando as dependências externas (`whatsapp-web.js`, `gram.js`).
+- [ ] 12.1 Configurar o ambiente de testes para executar testes unitários e de integração.
+- [ ] 12.2 Escrever testes de integração para os casos de uso de usuário e ponte, mockando as dependências externas (`whatsapp-web.js`, `gram.js`).
 - [ ] 12.3 Criar um `Dockerfile` multi-stage para buildar o frontend React e o backend NestJS em uma única imagem.
 - [ ] 12.4 Otimizar a imagem Docker para produção (e.g., usando uma base de imagem Node.js slim).
 - [ ] 12.5 Criar um arquivo `docker-compose.yml` para facilitar o desenvolvimento local.

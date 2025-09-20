@@ -7,8 +7,8 @@
 
 ## Fase 1: CI/CD e Autenticação de Usuário
 
-- [ ] 2.0 **Configuração de CI/CD:** Automatizar o deploy do backend (GCP) e frontend (Vercel).
-- [ ] 3.0 **Backend - Core do Usuário:** Implementar cadastro e autenticação de usuários com JWT.
+- [x] 2.0 **Configuração de CI/CD:** Automatizar o deploy do backend (GCP) e frontend (Vercel).
+- [x] 3.0 **Backend - Core do Usuário:** Implementar cadastro e autenticação de usuários com JWT.
 - [ ] 4.0 **Frontend - Cadastro e Login:** Criar as telas de cadastro e login.
 
 ## Fase 2: Conexão com Plataformas

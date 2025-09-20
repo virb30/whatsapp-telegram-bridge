@@ -1,5 +1,5 @@
 ---
-status: pending
+status: approved_with_comments
 parallelizable: true
 blocked_by: ["2.0"]
 ---
@@ -24,13 +24,13 @@ Esta tarefa foca na implementação da lógica de negócio para o gerenciamento 
 - Proteger os endpoints da API que exigem autenticação.
 
 ## Subtarefas
-- [ ] 3.1 Criar o `UserService` em `src/application/services` e injetar o `UserRepository`.
-- [ ] 3.2 Implementar o método `createUser` que realiza o hash da senha e salva o novo usuário usando o repositório.
-- [ ] 3.3 Implementar o método `findUserByEmail` usando o repositório.
-- [ ] 3.4 Configurar o módulo de autenticação do NestJS (`@nestjs/jwt` e `@nestjs/passport`).
-- [ ] 3.5 Criar o endpoint `POST /api/v1/users` para cadastro.
-- [ ] 3.6 Criar o endpoint `POST /api/v1/auth/login` que valida as credenciais e retorna um token JWT.
-- [ ] 3.7 Implementar um `JwtStrategy` e proteger os endpoints relevantes com um `AuthGuard`.
+- [x] 3.1 Criar o `UserService` em `src/application/services` e injetar o `UserRepository`.
+- [x] 3.2 Implementar o método `createUser` que realiza o hash da senha e salva o novo usuário usando o repositório.
+- [x] 3.3 Implementar o método `findUserByEmail` usando o repositório.
+- [x] 3.4 Configurar o módulo de autenticação do NestJS (`@nestjs/jwt` e `@nestjs/passport`).
+- [x] 3.5 Criar o endpoint `POST /api/v1/users` para cadastro.
+- [x] 3.6 Criar o endpoint `POST /api/v1/auth/login` que valida as credenciais e retorna um token JWT.
+- [x] 3.7 Implementar um `JwtStrategy` e proteger os endpoints relevantes com um `AuthGuard`.
 
 ## Sequenciamento
 - **Bloqueado por:** 2.0 (Configuração de CI/CD).
