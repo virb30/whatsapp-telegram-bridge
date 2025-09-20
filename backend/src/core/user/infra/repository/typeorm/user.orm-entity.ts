@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { BridgeOrmEntity } from '../../../bridge/infra/typeorm/bridge.orm-entity';
+import { BridgeOrmEntity } from '../../../../bridge/infra/typeorm/bridge.orm-entity';
 
 @Entity()
 export class UserOrmEntity {

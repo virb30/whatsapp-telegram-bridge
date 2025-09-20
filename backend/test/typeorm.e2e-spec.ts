@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserOrmEntity } from '../src/core/user/infra/typeorm/user.orm-entity';
+import { UserOrmEntity } from '../src/core/user/infra/repository/typeorm/user.orm-entity';
 import { BridgeOrmEntity } from '../src/core/bridge/infra/typeorm/bridge.orm-entity';
 
 describe('TypeORM SQLite (e2e)', () => {

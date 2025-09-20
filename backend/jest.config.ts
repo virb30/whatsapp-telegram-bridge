@@ -1,5 +1,6 @@
-/** @type {import('jest').Config} */
-module.exports = {
+import type {Config} from 'jest';
+
+const config: Config = {
   displayName: 'backend',
   moduleFileExtensions: [
     'js',
@@ -9,8 +10,12 @@ module.exports = {
   rootDir: 'src',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest'
+    '^.+\\.(t|j)s$': '@swc/jest'
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!uuid)',
+     "\\.pnp\\.[^\\/]+$"
+  ],
   collectCoverageFrom: [
     '**/*.(t|j)s'
   ],
@@ -20,3 +25,5 @@ module.exports = {
     '^src/(.*)$': '<rootDir>/$1'
   }
 };
+
+export default config;

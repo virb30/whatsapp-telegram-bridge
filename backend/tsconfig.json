@@ -13,7 +13,6 @@
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "rootDir": "src",
     "baseUrl": "./",
     "outDir": "./dist",
     "incremental": true,
@@ -22,11 +21,12 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
   "include": [
     "src/**/*",
-    "test/**/*"
+    "test/**/*",
+    "jest.config.ts"
   ],
   "exclude": [
     "node_modules",

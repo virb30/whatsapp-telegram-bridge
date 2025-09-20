@@ -65,7 +65,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "yarn validate"
+      "yarn format:write format:check lint tsc"
     ],
     "*.{json,md}": [
       "yarn format:write format:check lint"

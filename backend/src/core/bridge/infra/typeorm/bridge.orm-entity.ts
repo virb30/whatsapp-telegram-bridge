@@ -5,7 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserOrmEntity } from '../../../user/infra/typeorm/user.orm-entity';
+import { UserOrmEntity } from '../../../user/infra/repository/typeorm/user.orm-entity';
 
 @Entity()
 export class BridgeOrmEntity {
