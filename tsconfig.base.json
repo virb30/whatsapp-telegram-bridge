@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2023",
-    "lib": [
-      "ES2023"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
@@ -14,19 +12,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "jsx": "react-jsx",
+    "types": ["node", "jest"],
     "baseUrl": "./",
     "paths": {}
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }

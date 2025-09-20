@@ -4,8 +4,14 @@ alwaysApply: false
 ---
 # Frontend
 
-O Frontend deverá ser escrito em React com Vite
+O Frontend deverá ser escrito utilizando Nextjs
 
 Todos os componentes (design system) devem utilizar o shadcn
 
 Toda estilização deve utilizar as classes utilitárias do TailwindCSS
+
+Utilize o playwright MCP para verificar se a tela está responsiva e testar se todo o comportamento e experiência do usuário estão conforme previsto.
+
+SEMPRE implemente testes utilizando a `testing-library` concentrando-se no comportamento e não nos detalhes de implementação
+
+Faça testes de unidade para todos os componentes que forem implementados
