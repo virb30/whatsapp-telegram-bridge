@@ -25,8 +25,6 @@ export class TypeormUserRepository implements UserRepositoryInterface {
 
   async findByEmail(email: string): Promise<User | null> {
     const found = await this.repo.findOne({ where: { email } });
-    console.log('email', email);
-    console.log('found', found);
     if (!found) return null;
     const user = new User({
       id: new UserId(found.id),

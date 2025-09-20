@@ -1,46 +1,32 @@
-import NxWelcome from './nx-welcome';
+import { Route, Routes, Link, Navigate } from 'react-router-dom';
+import { LoginPage } from './pages/Login';
+import { RegisterPage } from './pages/Register';
+import { useAuthStore } from './store/auth.store';
 
-import { Route, Routes, Link } from 'react-router-dom';
+function PrivateRoute({ children }: { children: JSX.Element }) {
+  const { isAuthenticated } = useAuthStore();
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  return children;
+}
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="frontend" />
-
       {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
+      <nav className="p-4 border-b">
+        <ul className="flex gap-4">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/login">Login</Link>
           </li>
           <li>
-            <Link to="/page-2">Page 2</Link>
+            <Link to="/register">Cadastro</Link>
           </li>
         </ul>
-      </div>
+      </nav>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<PrivateRoute><div className="p-6">Dashboard</div></PrivateRoute>} />
       </Routes>
       {/* END: routes */}
     </div>

@@ -43,8 +43,7 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "jest:test"
-      },
-      "exclude": ["backend2-e2e/**/*"]
+      }
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -86,6 +85,13 @@
         "typecheckTargetName": "typecheck",
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "plugin": "@nx/docker",
+      "options": {
+        "buildTarget": "docker:build",
+        "runTarget": "docker:run"
       }
     }
   ],

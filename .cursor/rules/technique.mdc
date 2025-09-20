@@ -4,6 +4,4 @@ alwaysApply: true
 
 Sempre que implementar um código utilize TDD, sempre iniciando pelo teste.
 
-Sempre instale dependências no projeto desejado usando o comando `yarn workspace <projeto> add <biblioteca>`.
- - Ex: instalar vitest como dependência de desenvolvimento no projeto frontend: `yarn workspace frontend add -D vitest`
- - Ex: instalar axios como denpendência no projeto frontend: `yarn workspace frontend add axios`
+Sempre instale dependências na raíz do projeto

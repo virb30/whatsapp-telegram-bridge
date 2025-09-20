@@ -2,6 +2,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,

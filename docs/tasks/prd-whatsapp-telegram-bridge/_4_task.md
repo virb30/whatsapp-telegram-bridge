@@ -20,6 +20,7 @@ Criar as páginas e a lógica no frontend para que os usuários possam se cadast
 
 ## Requisitos
 - Desenvolver uma Single Page Application (SPA) com React e Vite.
+- O layout deve ser inspirado no github.
 - Implementar rotas para as páginas de Cadastro e Login.
 - Integrar com os endpoints `POST /api/v1/users` e `POST /api/v1/auth/login`.
 - Armazenar o token JWT de forma segura no cliente e utilizá-lo em requisições futuras.
