@@ -4,7 +4,7 @@ import globals from "globals";
 
 const tsRecommendedInSrc = tseslint.configs.recommended.map((conf) => ({
   ...conf,
-  files: ["src/**/*.ts"],
+  files: ["**/*.ts"],
 }));
 
 export default defineConfig([
@@ -29,4 +29,11 @@ export default defineConfig([
       },
     },
   },
+  {
+    files: ["*.json"],
+    parser: "jsonc-eslint-parser",
+    rules: {
+      "@nx/dependency-checks": "error"
+    }
+  }
 ]);

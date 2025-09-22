@@ -22,9 +22,9 @@ export class WhatsAppEvents implements WhatsAppEventsInterface {
     this.emitter.emit('incoming_message', message);
   }
 
-  onIncomingMessage(listener: (message: WhatsAppIncomingMessage) => void): void {
+  onIncomingMessage(
+    listener: (message: WhatsAppIncomingMessage) => void,
+  ): void {
     this.emitter.on('incoming_message', listener);
   }
 }
-
-

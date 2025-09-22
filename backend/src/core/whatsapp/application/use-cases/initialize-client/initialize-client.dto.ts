@@ -9,5 +9,3 @@ export interface InitializeWhatsAppClientOutput {
   status: 'ready' | 'qr' | 'connecting' | 'error';
   qrCode?: string;
 }
-
-

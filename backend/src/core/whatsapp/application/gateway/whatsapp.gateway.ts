@@ -1,6 +1,12 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { WHATSAPP_EVENTS, type WhatsAppEventsInterface } from '../events/whatsapp.events';
-import { WHATSAPP_SERVICE, type WhatsAppServiceInterface } from '../interfaces/whatsapp.service';
+import {
+  WHATSAPP_EVENTS,
+  type WhatsAppEventsInterface,
+} from '../events/whatsapp.events';
+import {
+  WHATSAPP_SERVICE,
+  type WhatsAppServiceInterface,
+} from '../interfaces/whatsapp.service';
 
 @Injectable()
 export class WhatsAppGateway {
@@ -24,9 +30,9 @@ export class WhatsAppGateway {
         body: payload.body,
         timestamp: payload.timestamp,
       });
-      this.logger.debug(`Forward candidate from ${userId} in ${payload.chatId}`);
+      this.logger.debug(
+        `Forward candidate from ${userId} in ${payload.chatId}`,
+      );
     });
   }
 }
-
-

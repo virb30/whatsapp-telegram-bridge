@@ -15,7 +15,8 @@ export class DatabaseStore {
 
   async get(): Promise<any> {
     // Prefere inicial se fornecida; senão busca repo
-    const raw = this.initialSessionJson ?? (await this.repo.getSessionJson(this.userId));
+    const raw =
+      this.initialSessionJson ?? (await this.repo.getSessionJson(this.userId));
     if (!raw) return null as unknown as object;
     try {
       return JSON.parse(raw);
@@ -45,5 +46,3 @@ export class DatabaseStore {
     return this.get();
   }
 }
-
-

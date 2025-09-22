@@ -5,7 +5,9 @@ import { type WhatsAppSessionRepositoryInterface } from '../../../application/in
 import { WhatsAppSessionOrmEntity } from './whatsapp-session.orm-entity';
 
 @Injectable()
-export class TypeormWhatsAppSessionRepository implements WhatsAppSessionRepositoryInterface {
+export class TypeormWhatsAppSessionRepository
+  implements WhatsAppSessionRepositoryInterface
+{
   constructor(
     @InjectRepository(WhatsAppSessionOrmEntity)
     private readonly repo: Repository<WhatsAppSessionOrmEntity>,
@@ -16,10 +18,16 @@ export class TypeormWhatsAppSessionRepository implements WhatsAppSessionReposito
     return row?.sessionJson ?? null;
   }
 
-  async setSessionJson(userId: string, sessionJson: string | null): Promise<void> {
+  async setSessionJson(
+    userId: string,
+    sessionJson: string | null,
+  ): Promise<void> {
     const existing = await this.repo.findOne({ where: { userId } });
     if (!existing) {
-      const created = this.repo.create({ userId, sessionJson: sessionJson ?? null });
+      const created = this.repo.create({
+        userId,
+        sessionJson: sessionJson ?? null,
+      });
       await this.repo.save(created);
       return;
     }
@@ -27,5 +35,3 @@ export class TypeormWhatsAppSessionRepository implements WhatsAppSessionReposito
     await this.repo.save(existing);
   }
 }
-
-

@@ -11,7 +11,9 @@ export interface InitializeClientResult {
 }
 
 export interface WhatsAppServiceInterface {
-  initializeClient(params: InitializeClientParams): Promise<InitializeClientResult>;
+  initializeClient(
+    params: InitializeClientParams,
+  ): Promise<InitializeClientResult>;
   onMessage(
     userId: string,
     handler: (payload: {
@@ -22,5 +24,3 @@ export interface WhatsAppServiceInterface {
     }) => void,
   ): void;
 }
-
-

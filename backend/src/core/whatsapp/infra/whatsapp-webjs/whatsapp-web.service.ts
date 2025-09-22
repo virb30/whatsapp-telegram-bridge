@@ -5,7 +5,10 @@ import {
   type WhatsAppServiceInterface,
 } from '../../application/interfaces/whatsapp.service';
 import { UpdateUserWhatsAppSessionUseCase } from '../../application/use-cases/update-session/update-session.use-case';
-import { WHATSAPP_SESSION_REPOSITORY, type WhatsAppSessionRepositoryInterface } from '../../application/interfaces/whatsapp-session.repository';
+import {
+  WHATSAPP_SESSION_REPOSITORY,
+  type WhatsAppSessionRepositoryInterface,
+} from '../../application/interfaces/whatsapp-session.repository';
 import { DatabaseStore } from './database.store';
 
 // Lazy import para evitar custos em testes que não usam a lib
@@ -35,9 +38,11 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
   ): Promise<InitializeClientResult> {
     if (!WhatsAppClientLib || !LocalAuthLib || !RemoteAuthLib) {
       const w = await import('whatsapp-web.js');
-      WhatsAppClientLib = (w as unknown as { Client: WhatsAppClientType }).Client;
+      WhatsAppClientLib = (w as unknown as { Client: WhatsAppClientType })
+        .Client;
       LocalAuthLib = (w as unknown as { LocalAuth: LocalAuthType }).LocalAuth;
-      RemoteAuthLib = (w as unknown as { RemoteAuth?: RemoteAuthType }).RemoteAuth;
+      RemoteAuthLib = (w as unknown as { RemoteAuth?: RemoteAuthType })
+        .RemoteAuth;
     }
 
     let client = this.userIdToClient.get(params.userId);
@@ -50,18 +55,22 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
     // RemoteAuth (recomendado). Fallback para LocalAuth caso indisponível.
     if (RemoteAuthLib) {
       const userId = params.userId;
-      const store = new DatabaseStore(this.sessionRepo, userId, params.sessionJson ?? null) as unknown as object;
+      const store = new DatabaseStore(
+        this.sessionRepo,
+        userId,
+        params.sessionJson ?? null,
+      ) as unknown as object;
 
-      client = new WhatsAppClientLib!({
-        authStrategy: new RemoteAuthLib!({
+      client = new WhatsAppClientLib({
+        authStrategy: new RemoteAuthLib({
           clientId: userId,
           store,
           backupSyncIntervalMs: 60000,
         }),
       });
     } else {
-      client = new WhatsAppClientLib!({
-        authStrategy: new LocalAuthLib!({ clientId: params.userId }),
+      client = new WhatsAppClientLib({
+        authStrategy: new LocalAuthLib({ clientId: params.userId }),
       });
     }
 
@@ -76,7 +85,10 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
     });
     client.on('disconnected', async () => {
       try {
-        await this.updateSession.execute({ userId: params.userId, sessionJson: null });
+        await this.updateSession.execute({
+          userId: params.userId,
+          sessionJson: null,
+        });
       } catch {
         // ignore
       }
@@ -113,5 +125,3 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
     });
   }
 }
-
-

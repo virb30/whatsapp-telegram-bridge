@@ -1,5 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { WHATSAPP_SESSION_REPOSITORY, type WhatsAppSessionRepositoryInterface } from '../../interfaces/whatsapp-session.repository';
+import {
+  WHATSAPP_SESSION_REPOSITORY,
+  type WhatsAppSessionRepositoryInterface,
+} from '../../interfaces/whatsapp-session.repository';
 
 export interface UpdateUserWhatsAppSessionInput {
   readonly userId: string;
@@ -14,8 +17,9 @@ export class UpdateUserWhatsAppSessionUseCase {
   ) {}
 
   async execute(input: UpdateUserWhatsAppSessionInput): Promise<void> {
-    await this.userSessionRepository.setSessionJson(input.userId, input.sessionJson);
+    await this.userSessionRepository.setSessionJson(
+      input.userId,
+      input.sessionJson,
+    );
   }
 }
-
-

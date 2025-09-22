@@ -16,7 +16,11 @@ describe('TypeORM SQLite (e2e)', () => {
           entities: [UserOrmEntity, BridgeOrmEntity, WhatsAppSessionOrmEntity],
           synchronize: true,
         }),
-        TypeOrmModule.forFeature([UserOrmEntity, BridgeOrmEntity, WhatsAppSessionOrmEntity]),
+        TypeOrmModule.forFeature([
+          UserOrmEntity,
+          BridgeOrmEntity,
+          WhatsAppSessionOrmEntity,
+        ]),
       ],
     }).compile();
 

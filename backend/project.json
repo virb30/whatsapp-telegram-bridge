@@ -40,10 +40,13 @@
       }
     },
     "lint": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "command": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-        "cwd": "backend"
+        "lintFilePatterns": [
+          "backend/src/**/*.{ts,tsx,js,jsx}",
+          "backend/package.json"
+        ]
       }
     },
     "tsc": {
@@ -89,5 +92,7 @@
       }
     }
   },
-  "tags": []
+  "tags": [
+    "type:backend"
+  ]
 }

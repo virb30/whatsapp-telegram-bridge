@@ -12,5 +12,3 @@ export class WhatsAppSessionOrmEntity {
   @Column({ type: 'text', nullable: true })
   sessionJson?: string | null;
 }
-
-

@@ -18,7 +18,10 @@ describe('WhatsAppController (e2e)', () => {
     jwt = app.get(JwtService);
     await app.init();
 
-    token = jwt.sign({ sub: 'test-user-id', email: 'test@example.com' }, { secret: process.env.JWT_SECRET || 'dev-secret' });
+    token = jwt.sign(
+      { sub: 'test-user-id', email: 'test@example.com' },
+      { secret: process.env.JWT_SECRET || 'dev-secret' },
+    );
   });
 
   afterAll(async () => {
@@ -41,5 +44,3 @@ describe('WhatsAppController (e2e)', () => {
     }
   });
 });
-
-

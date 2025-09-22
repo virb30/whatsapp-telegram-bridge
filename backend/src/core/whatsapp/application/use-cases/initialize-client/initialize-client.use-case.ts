@@ -11,8 +11,14 @@ import {
   USER_REPOSITORY,
   type UserRepositoryInterface,
 } from 'src/core/user/application/interfaces/user.repository';
-import { WHATSAPP_SESSION_REPOSITORY, type WhatsAppSessionRepositoryInterface } from '../../interfaces/whatsapp-session.repository';
-import { WHATSAPP_EVENTS, type WhatsAppEventsInterface } from '../../events/whatsapp.events';
+import {
+  WHATSAPP_SESSION_REPOSITORY,
+  type WhatsAppSessionRepositoryInterface,
+} from '../../interfaces/whatsapp-session.repository';
+import {
+  WHATSAPP_EVENTS,
+  type WhatsAppEventsInterface,
+} from '../../events/whatsapp.events';
 import { WhatsAppGateway } from '../../gateway/whatsapp.gateway';
 
 @Injectable()
@@ -31,7 +37,9 @@ export class InitializeWhatsAppClientUseCase {
     input: InitializeWhatsAppClientInput,
   ): Promise<InitializeWhatsAppClientOutput> {
     // Nota: buscamos a sessão via repositório de sessão para desacoplar do domínio
-    const existingSession = await this.userSessionRepository.getSessionJson(input.userId);
+    const existingSession = await this.userSessionRepository.getSessionJson(
+      input.userId,
+    );
     const result = await this.whatsappService.initializeClient({
       userId: input.userId,
       sessionJson: existingSession ?? null,
@@ -41,5 +49,3 @@ export class InitializeWhatsAppClientUseCase {
     return { status: result.status, qrCode: result.qrCode };
   }
 }
-
-

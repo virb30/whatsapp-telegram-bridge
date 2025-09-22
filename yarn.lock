@@ -4009,49 +4009,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/microservices@npm:^11.0.0":
-  version: 11.1.6
-  resolution: "@nestjs/microservices@npm:11.1.6"
-  dependencies:
-    iterare: "npm:1.2.1"
-    tslib: "npm:2.8.1"
-  peerDependencies:
-    "@grpc/grpc-js": "*"
-    "@nestjs/common": ^11.0.0
-    "@nestjs/core": ^11.0.0
-    "@nestjs/websockets": ^11.0.0
-    amqp-connection-manager: "*"
-    amqplib: "*"
-    cache-manager: "*"
-    ioredis: "*"
-    kafkajs: "*"
-    mqtt: "*"
-    nats: "*"
-    reflect-metadata: ^0.1.12 || ^0.2.0
-    rxjs: ^7.1.0
-  peerDependenciesMeta:
-    "@grpc/grpc-js":
-      optional: true
-    "@nestjs/websockets":
-      optional: true
-    amqp-connection-manager:
-      optional: true
-    amqplib:
-      optional: true
-    cache-manager:
-      optional: true
-    ioredis:
-      optional: true
-    kafkajs:
-      optional: true
-    mqtt:
-      optional: true
-    nats:
-      optional: true
-  checksum: 10c0/c7405467083ef491d207849b59ea339e090d98599f923ac2a22d1987775c254afdccc7cb182292af2d03110b00af27a70a8c14b28b3024b07aae9386bf5b9114
-  languageName: node
-  linkType: hard
-
 "@nestjs/passport@npm:^11.0.5":
   version: 11.0.5
   resolution: "@nestjs/passport@npm:11.0.5"
@@ -4122,26 +4079,6 @@ __metadata:
     rxjs: ^7.2.0
     typeorm: ^0.3.0
   checksum: 10c0/bdb96fc0d05cb653ffb8d90e44f866c7634fe4065db409e878e06ab1c3ae0333b5629c7590c1f94f2adf39ef7e95422dff34eadb2910f6eb7b6c598bcc65088a
-  languageName: node
-  linkType: hard
-
-"@nestjs/websockets@npm:^11.0.0":
-  version: 11.1.6
-  resolution: "@nestjs/websockets@npm:11.1.6"
-  dependencies:
-    iterare: "npm:1.2.1"
-    object-hash: "npm:3.0.0"
-    tslib: "npm:2.8.1"
-  peerDependencies:
-    "@nestjs/common": ^11.0.0
-    "@nestjs/core": ^11.0.0
-    "@nestjs/platform-socket.io": ^11.0.0
-    reflect-metadata: ^0.1.12 || ^0.2.0
-    rxjs: ^7.1.0
-  peerDependenciesMeta:
-    "@nestjs/platform-socket.io":
-      optional: true
-  checksum: 10c0/2de058c67b0347ad05efc71cd5becc742109335bab6dd787d0228b2fbca3fa81b43c1c625551f22155dcbddbdcbee036767ada038582b8c57b5c1c456ce9cb32
   languageName: node
   linkType: hard
 
@@ -4355,6 +4292,31 @@ __metadata:
     enquirer: "npm:~2.3.6"
     tslib: "npm:^2.3.0"
   checksum: 10c0/9e362789f34c9394f63e52aeb57b96abc623c42ed704f799b884c1525ddabf2399f5b5dd868c03a8db94c595f47483631c1b9715409e01ddda7f3124299cd1c1
+  languageName: node
+  linkType: hard
+
+"@nx/eslint-plugin@npm:^21.5.3":
+  version: 21.5.3
+  resolution: "@nx/eslint-plugin@npm:21.5.3"
+  dependencies:
+    "@nx/devkit": "npm:21.5.3"
+    "@nx/js": "npm:21.5.3"
+    "@phenomnomnominal/tsquery": "npm:~5.0.1"
+    "@typescript-eslint/type-utils": "npm:^8.0.0"
+    "@typescript-eslint/utils": "npm:^8.0.0"
+    chalk: "npm:^4.1.0"
+    confusing-browser-globals: "npm:^1.0.9"
+    globals: "npm:^15.9.0"
+    jsonc-eslint-parser: "npm:^2.1.0"
+    semver: "npm:^7.5.3"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@typescript-eslint/parser": ^6.13.2 || ^7.0.0 || ^8.0.0
+    eslint-config-prettier: ^10.0.0
+  peerDependenciesMeta:
+    eslint-config-prettier:
+      optional: true
+  checksum: 10c0/f1dbb9815cfa46be7ec576a3b0911639da8f128b62e6f7a9485392d4b7dc0508a3ef22a3688c25d5f74c749645cbd93a41e2299d6a7bf2a9177743243b8c07fe
   languageName: node
   linkType: hard
 
@@ -4901,50 +4863,6 @@ __metadata:
     picocolors: "npm:^1.1.0"
     tslib: "npm:^2.3.0"
   checksum: 10c0/f0ecc8d0e67153df78903c61765dd46f813a576381cfd8ab870ae8636cd5cece3066310094dfaf01d6d2741f675718e29f381dfab83c368c9af00a692962e8af
-  languageName: node
-  linkType: hard
-
-"@nx/webpack@npm:*":
-  version: 21.5.3
-  resolution: "@nx/webpack@npm:21.5.3"
-  dependencies:
-    "@babel/core": "npm:^7.23.2"
-    "@nx/devkit": "npm:21.5.3"
-    "@nx/js": "npm:21.5.3"
-    "@phenomnomnominal/tsquery": "npm:~5.0.1"
-    ajv: "npm:^8.12.0"
-    autoprefixer: "npm:^10.4.9"
-    babel-loader: "npm:^9.1.2"
-    browserslist: "npm:^4.21.4"
-    copy-webpack-plugin: "npm:^10.2.4"
-    css-loader: "npm:^6.4.0"
-    css-minimizer-webpack-plugin: "npm:^5.0.0"
-    fork-ts-checker-webpack-plugin: "npm:7.2.13"
-    less: "npm:^4.1.3"
-    less-loader: "npm:^11.1.0"
-    license-webpack-plugin: "npm:^4.0.2"
-    loader-utils: "npm:^2.0.3"
-    mini-css-extract-plugin: "npm:~2.4.7"
-    parse5: "npm:4.0.0"
-    picocolors: "npm:^1.1.0"
-    postcss: "npm:^8.4.38"
-    postcss-import: "npm:~14.1.0"
-    postcss-loader: "npm:^6.1.1"
-    rxjs: "npm:^7.8.0"
-    sass: "npm:^1.85.0"
-    sass-embedded: "npm:^1.83.4"
-    sass-loader: "npm:^16.0.4"
-    source-map-loader: "npm:^5.0.0"
-    style-loader: "npm:^3.3.0"
-    terser-webpack-plugin: "npm:^5.3.3"
-    ts-loader: "npm:^9.3.1"
-    tsconfig-paths-webpack-plugin: "npm:4.2.0"
-    tslib: "npm:^2.3.0"
-    webpack: "npm:^5.101.3"
-    webpack-dev-server: "npm:^5.2.1"
-    webpack-node-externals: "npm:^3.0.0"
-    webpack-subresource-integrity: "npm:^5.1.0"
-  checksum: 10c0/03ac1209a1cb2587fe52c442c29d19497883351d4bb5eadc99cf57eb3b0c4ef32b2d36424eec44d8d02506e72b15e37d6f699fad41df64fe9a836af1d6d79103
   languageName: node
   linkType: hard
 
@@ -7292,7 +7210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/type-utils@npm:8.44.0":
+"@typescript-eslint/type-utils@npm:8.44.0, @typescript-eslint/type-utils@npm:^8.0.0":
   version: 8.44.0
   resolution: "@typescript-eslint/type-utils@npm:8.44.0"
   dependencies:
@@ -7377,7 +7295,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.44.0":
+"@typescript-eslint/utils@npm:8.44.0, @typescript-eslint/utils@npm:^8.0.0":
   version: 8.44.0
   resolution: "@typescript-eslint/utils@npm:8.44.0"
   dependencies:
@@ -8117,7 +8035,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.11.0, acorn@npm:^8.15.0, acorn@npm:^8.4.1, acorn@npm:^8.9.0":
+"acorn@npm:^8.11.0, acorn@npm:^8.15.0, acorn@npm:^8.4.1, acorn@npm:^8.5.0, acorn@npm:^8.9.0":
   version: 8.15.0
   resolution: "acorn@npm:8.15.0"
   bin:
@@ -8348,45 +8266,6 @@ __metadata:
   checksum: 10c0/57b06ae984bc32a0d22592c87384cd88fe4511b1dd7581497831c56d41939c8a001b28e7b853e1450f2bf61992dfcaa8ae2d0d161a0a90c4fb631ef07098fbac
   languageName: node
   linkType: hard
-
-"api@workspace:backend/api":
-  version: 0.0.0-use.local
-  resolution: "api@workspace:backend/api"
-  dependencies:
-    "@nestjs/common": "npm:^11.0.1"
-    "@nestjs/core": "npm:^11.0.1"
-    "@nestjs/jwt": "npm:^11.0.0"
-    "@nestjs/microservices": "npm:^11.0.0"
-    "@nestjs/passport": "npm:^11.0.5"
-    "@nestjs/platform-express": "npm:^11.0.1"
-    "@nestjs/testing": "npm:^11.0.1"
-    "@nestjs/typeorm": "npm:^11.0.0"
-    "@nestjs/websockets": "npm:^11.0.0"
-    "@nx/webpack": "npm:*"
-    "@types/bcrypt": "npm:^6.0.0"
-    "@types/jest": "npm:^30.0.0"
-    "@types/node": "npm:^24.5.2"
-    "@types/passport": "npm:^0"
-    "@types/passport-jwt": "npm:^4.0.1"
-    "@types/supertest": "npm:^6.0.3"
-    "@types/uuid": "npm:^11.0.0"
-    bcrypt: "npm:^6.0.0"
-    class-transformer: "npm:*"
-    class-validator: "npm:^0.14.2"
-    passport: "npm:^0.7.0"
-    passport-jwt: "npm:^4.0.1"
-    pino: "npm:^9.9.5"
-    puppeteer: "npm:18.2.1"
-    qrcode-terminal: "npm:^0.12.0"
-    reflect-metadata: "npm:^0.2.2"
-    rxjs: "npm:^7.8.1"
-    sqlite3: "npm:^5.1.7"
-    telegraf: "npm:^4.16.3"
-    typeorm: "npm:^0.3.20"
-    uuid: "npm:^13.0.0"
-    whatsapp-web.js: "npm:^1.34.1"
-  languageName: unknown
-  linkType: soft
 
 "app-root-path@npm:^3.1.0":
   version: 3.1.0
@@ -9731,13 +9610,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-transformer@npm:*":
-  version: 0.5.1
-  resolution: "class-transformer@npm:0.5.1"
-  checksum: 10c0/19809914e51c6db42c036166839906420bb60367df14e15f49c45c8c1231bf25ae661ebe94736ee29cc688b77101ef851a8acca299375cc52fc141b64acde18a
-  languageName: node
-  linkType: hard
-
 "class-validator@npm:^0.14.2":
   version: 0.14.2
   resolution: "class-validator@npm:0.14.2"
@@ -10117,6 +9989,13 @@ __metadata:
   dependencies:
     source-map: "npm:^0.6.1"
   checksum: 10c0/d30cec83a320d20d7e9482a4d011fa84319a0a8f9107acb632c48493d608be3a2b879608866d9edba2ce304ee52bc798138c26ad16eda6fbe7ec5e7bec99a683
+  languageName: node
+  linkType: hard
+
+"confusing-browser-globals@npm:^1.0.9":
+  version: 1.0.11
+  resolution: "confusing-browser-globals@npm:1.0.11"
+  checksum: 10c0/475d0a284fa964a5182b519af5738b5b64bf7e413cfd703c1b3496bf6f4df9f827893a9b221c0ea5873c1476835beb1e0df569ba643eff0734010c1eb780589e
   languageName: node
   linkType: hard
 
@@ -12098,7 +11977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-visitor-keys@npm:^3.4.1, eslint-visitor-keys@npm:^3.4.3":
+"eslint-visitor-keys@npm:^3.0.0, eslint-visitor-keys@npm:^3.4.1, eslint-visitor-keys@npm:^3.4.3":
   version: 3.4.3
   resolution: "eslint-visitor-keys@npm:3.4.3"
   checksum: 10c0/92708e882c0a5ffd88c23c0b404ac1628cf20104a108c745f240a13c332a11aac54f49a22d5762efbffc18ecbc9a580d1b7ad034bf5f3cc3307e5cbff2ec9820
@@ -12173,7 +12052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"espree@npm:^9.6.0":
+"espree@npm:^9.0.0, espree@npm:^9.6.0":
   version: 9.6.1
   resolution: "espree@npm:9.6.1"
   dependencies:
@@ -13377,6 +13256,13 @@ __metadata:
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
   checksum: 10c0/b96ff42620c9231ad468d4c58ff42afee7777ee1c963013ff8aabe095a451d0ceeb8dcd8ef4cbd64d2538cef45f787a78ba3a9574f4a634438963e334471302d
+  languageName: node
+  linkType: hard
+
+"globals@npm:^15.9.0":
+  version: 15.15.0
+  resolution: "globals@npm:15.15.0"
+  checksum: 10c0/f9ae80996392ca71316495a39bec88ac43ae3525a438b5626cd9d5ce9d5500d0a98a266409605f8cd7241c7acf57c354a48111ea02a767ba4f374b806d6861fe
   languageName: node
   linkType: hard
 
@@ -15412,6 +15298,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonc-eslint-parser@npm:^2.1.0, jsonc-eslint-parser@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "jsonc-eslint-parser@npm:2.4.1"
+  dependencies:
+    acorn: "npm:^8.5.0"
+    eslint-visitor-keys: "npm:^3.0.0"
+    espree: "npm:^9.0.0"
+    semver: "npm:^7.3.5"
+  checksum: 10c0/735bd33435fee002bf7f07d23ba969b994971ab3b333a0e2641b79cd413819fe36540ba6ed29da9ebc69062625e8bfb167ff4415321f9640fdd9d0cf92dfa999
+  languageName: node
+  linkType: hard
+
 "jsonc-parser@npm:3.2.0":
   version: 3.2.0
   resolution: "jsonc-parser@npm:3.2.0"
@@ -17302,7 +17200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-hash@npm:3.0.0, object-hash@npm:^3.0.0":
+"object-hash@npm:^3.0.0":
   version: 3.0.0
   resolution: "object-hash@npm:3.0.0"
   checksum: 10c0/a06844537107b960c1c8b96cd2ac8592a265186bfa0f6ccafe0d34eabdb526f6fa81da1f37c43df7ed13b12a4ae3457a16071603bcd39d8beddb5f08c37b0f47
@@ -23590,17 +23488,12 @@ __metadata:
     "@eslint/eslintrc": "npm:^2.1.1"
     "@eslint/js": "npm:^9.35.0"
     "@nestjs/cli": "npm:^11.0.0"
-    "@nestjs/common": "npm:^11.0.1"
-    "@nestjs/core": "npm:^11.0.1"
-    "@nestjs/jwt": "npm:^11.0.0"
-    "@nestjs/passport": "npm:^11.0.5"
-    "@nestjs/platform-express": "npm:^11.0.1"
     "@nestjs/schematics": "npm:^11.0.0"
     "@nestjs/testing": "npm:^11.0.0"
-    "@nestjs/typeorm": "npm:^11.0.0"
     "@next/eslint-plugin-next": "npm:^15.2.4"
     "@nx/docker": "npm:21.5.2"
     "@nx/eslint": "npm:21.5.2"
+    "@nx/eslint-plugin": "npm:^21.5.3"
     "@nx/jest": "npm:21.5.2"
     "@nx/js": "npm:21.5.3"
     "@nx/nest": "npm:21.5.2"
@@ -23617,17 +23510,13 @@ __metadata:
     "@swc/jest": "npm:^0.2.36"
     "@testing-library/dom": "npm:10.4.0"
     "@testing-library/react": "npm:16.1.0"
-    "@types/bcrypt": "npm:^6.0.0"
     "@types/express": "npm:^5.0.0"
     "@types/jest": "npm:^30.0.0"
     "@types/node": "npm:^24.5.2"
-    "@types/passport": "npm:^0"
-    "@types/passport-jwt": "npm:^4.0.1"
     "@types/qrcode-terminal": "npm:^0"
     "@types/react": "npm:^19.1.10"
     "@types/react-dom": "npm:^19.1.7"
     "@types/supertest": "npm:^6.0.2"
-    "@types/uuid": "npm:^11.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.43.0"
     "@typescript-eslint/parser": "npm:^8.43.0"
     "@vitejs/plugin-react": "npm:^5.0.0"
@@ -23636,8 +23525,6 @@ __metadata:
     autoprefixer: "npm:10.4.13"
     axios: "npm:^1.6.0"
     babel-jest: "npm:^30.0.2"
-    bcrypt: "npm:^6.0.0"
-    class-validator: "npm:^0.14.2"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     eslint: "npm:^9.35.0"
@@ -23656,44 +23543,33 @@ __metadata:
     jest-util: "npm:^30.0.2"
     jiti: "npm:^2.5.1"
     jsdom: "npm:~22.1.0"
+    jsonc-eslint-parser: "npm:^2.4.1"
     lucide-react: "npm:^0.544.0"
     next: "npm:~15.2.4"
     npm-run-all: "npm:^4.1.5"
     nx: "npm:21.5.2"
-    passport: "npm:^0.7.0"
-    passport-jwt: "npm:^4.0.1"
-    pino: "npm:^9.9.5"
     postcss: "npm:8.4.38"
     prettier: "npm:^3.6.2"
     prettier-plugin-organize-imports: "npm:^4.2.0"
-    puppeteer: "npm:18.2.1"
-    qrcode-terminal: "npm:^0.12.0"
     react: "npm:19.0.0"
     react-dom: "npm:19.0.0"
     react-router-dom: "npm:6.29.0"
-    reflect-metadata: "npm:^0.2.2"
-    rxjs: "npm:^7.8.1"
     source-map-support: "npm:^0.5.21"
-    sqlite3: "npm:^5.1.7"
     supertest: "npm:^7.0.0"
     tailwind-merge: "npm:^3.3.1"
     tailwindcss: "npm:3.4.3"
-    telegraf: "npm:^4.16.3"
     ts-jest: "npm:^29.4.4"
     ts-loader: "npm:^9.5.2"
     ts-node: "npm:^10.9.2"
     tsconfig-paths: "npm:^4.2.0"
     tslib: "npm:^2.3.0"
     typegram: "npm:^5.2.0"
-    typeorm: "npm:^0.3.20"
     typescript: "npm:^5.9.2"
     typescript-eslint: "npm:^8.44.0"
-    uuid: "npm:^13.0.0"
     vite: "npm:^7.1.2"
     vitest: "npm:^3.0.0"
     webpack: "npm:^5.101.3"
     webpack-cli: "npm:^5.1.4"
-    whatsapp-web.js: "npm:^1.34.1"
     zustand: "npm:^5.0.8"
   languageName: unknown
   linkType: soft
