@@ -3,6 +3,7 @@ import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserOrmEntity } from '../src/core/user/infra/repository/typeorm/user.orm-entity';
 import { BridgeOrmEntity } from '../src/core/bridge/infra/typeorm/bridge.orm-entity';
+import { WhatsAppSessionOrmEntity } from '../src/core/whatsapp/infra/repository/typeorm/whatsapp-session.orm-entity';
 
 describe('TypeORM SQLite (e2e)', () => {
   it('should connect and inject repositories', async () => {
@@ -12,10 +13,10 @@ describe('TypeORM SQLite (e2e)', () => {
           type: 'sqlite',
           database: ':memory:',
           dropSchema: true,
-          entities: [UserOrmEntity, BridgeOrmEntity],
+          entities: [UserOrmEntity, BridgeOrmEntity, WhatsAppSessionOrmEntity],
           synchronize: true,
         }),
-        TypeOrmModule.forFeature([UserOrmEntity, BridgeOrmEntity]),
+        TypeOrmModule.forFeature([UserOrmEntity, BridgeOrmEntity, WhatsAppSessionOrmEntity]),
       ],
     }).compile();
 

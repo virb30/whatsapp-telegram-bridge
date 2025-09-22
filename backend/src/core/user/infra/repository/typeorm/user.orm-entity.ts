@@ -12,11 +12,11 @@ export class UserOrmEntity {
   @Column()
   passwordHash!: string;
 
-  @Column({ type: 'text', nullable: true })
-  whatsappSession?: string;
+  @Column({ type: 'boolean', nullable: true, default: false })
+  whatsappSession?: boolean | null;
 
   @Column({ type: 'text', nullable: true })
-  telegramSession?: string;
+  telegramSession?: string | null;
 
   @OneToMany('BridgeOrmEntity', (bridge: BridgeOrmEntity) => bridge.user)
   bridges!: BridgeOrmEntity[];

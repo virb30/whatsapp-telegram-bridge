@@ -13,7 +13,7 @@
 
 ## Fase 2: Conexão com Plataformas
 
-- [ ] 5.0 **Backend - Integração com WhatsApp:** Implementar a conexão via `whatsapp-web.js` e geração de QR code.
+- [x] 5.0 **Backend - Integração com WhatsApp:** Implementar a conexão via `whatsapp-web.js` e geração de QR code.
 - [ ] 6.0 **Frontend - Conexão WhatsApp:** Criar a tela para exibição do QR code.
 - [ ] 7.0 **Backend - Integração com Telegram:** Implementar a conexão via `gram.js` com fluxo de autenticação completo.
 - [ ] 8.0 **Frontend - Conexão Telegram:** Criar as telas para o fluxo de autenticação do Telegram.

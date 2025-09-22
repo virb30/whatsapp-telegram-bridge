@@ -7,18 +7,21 @@ import { BridgeOrmEntity } from './core/bridge/infra/typeorm/bridge.orm-entity';
 import { UserModule } from './modules/user/user.module';
 import { BridgeModule } from './modules/bridge/bridge.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { WhatsAppModule } from './modules/whatsapp/whatsapp.module';
+import { WhatsAppSessionOrmEntity } from './core/whatsapp/infra/repository/typeorm/whatsapp-session.orm-entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.SQLITE_DB_PATH || 'data/dev.sqlite',
-      entities: [UserOrmEntity, BridgeOrmEntity],
+      entities: [UserOrmEntity, BridgeOrmEntity, WhatsAppSessionOrmEntity],
       synchronize: true,
     }),
     UserModule,
     BridgeModule,
     AuthModule,
+    WhatsAppModule,
   ],
   controllers: [AppController],
   providers: [AppService],

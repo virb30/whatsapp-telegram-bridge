@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module';
 import { UserOrmEntity } from '../src/core/user/infra/repository/typeorm/user.orm-entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BridgeOrmEntity } from 'src/core/bridge/infra/typeorm/bridge.orm-entity';
+import { WhatsAppSessionOrmEntity } from 'src/core/whatsapp/infra/repository/typeorm/whatsapp-session.orm-entity';
 import {
   HASH_SERVICE,
   HashServiceInterface,
@@ -38,7 +39,7 @@ describe('Auth flow (e2e)', () => {
           type: 'sqlite',
           database: ':memory:',
           dropSchema: true,
-          entities: [UserOrmEntity, BridgeOrmEntity],
+          entities: [UserOrmEntity, BridgeOrmEntity, WhatsAppSessionOrmEntity],
           synchronize: true,
         }),
         AppModule,

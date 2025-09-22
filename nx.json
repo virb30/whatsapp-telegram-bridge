@@ -2,29 +2,45 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/dist"],
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
       "cache": true
     },
     "format": {
-      "dependsOn": ["^format"]
+      "dependsOn": [
+        "^format"
+      ]
     },
     "start": {
-      "dependsOn": ["^start"]
+      "dependsOn": [
+        "^start"
+      ]
     },
     "lint": {
-      "dependsOn": ["^lint"],
+      "dependsOn": [
+        "^lint"
+      ],
       "cache": true
     },
     "tsc": {
-      "dependsOn": ["^tsc"]
+      "dependsOn": [
+        "^tsc"
+      ]
     },
     "test": {
-      "dependsOn": ["^test"],
+      "dependsOn": [
+        "^test"
+      ],
       "cache": true
     },
     "test:cov": {
-      "dependsOn": ["^test:cov"]
+      "dependsOn": [
+        "^test:cov"
+      ]
     }
   },
   "plugins": [
@@ -43,7 +59,10 @@
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "jest:test"
-      }
+      },
+      "exclude": [
+        "backend/api-e2e/**/*"
+      ]
     },
     {
       "plugin": "@nx/eslint/plugin",

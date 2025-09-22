@@ -1,5 +1,5 @@
 ---
-status: pending
+status: done
 parallelizable: true
 blocked_by: ["3.0"]
 ---
@@ -25,13 +25,13 @@ Esta tarefa consiste em implementar os casos de uso e a infraestrutura para a in
 - Escutar por novas mensagens nos grupos em que o usuário está.
 
 ## Subtarefas
-- [ ] 5.1 Adicionar a dependência `whatsapp-web.js` ao projeto.
-- [ ] 5.2 Criar o caso de uso `InitializeWhatsAppClientUseCase` para gerenciar a inicialização do cliente e a geração do QR code.
-- [ ] 5.3 Criar o caso de uso `UpdateUserWhatsAppSessionUseCase` para salvar a sessão do WhatsApp associada ao usuário.
-- [ ] 5.4 Implementar a lógica no `InitializeWhatsAppClientUseCase` para carregar a sessão do usuário ao inicializar o cliente.
-- [ ] 5.5 Criar um `WhatsAppGateway` que escuta por novas mensagens e dispara um evento ou chama um caso de uso para processá-las.
-- [ ] 5.6 Desenvolver um endpoint na API (`GET /api/v1/whatsapp/qr`) que executa o `InitializeWhatsAppClientUseCase` e retorna o QR code.
-- [ ] 5.7 Implementar a persistência da sessão do cliente no `UpdateUserWhatsAppSessionUseCase`, atualizando a entidade `User`.
+- [x] 5.1 Adicionar a dependência `whatsapp-web.js` ao projeto.
+- [x] 5.2 Criar o caso de uso `InitializeWhatsAppClientUseCase` para gerenciar a inicialização do cliente e a geração do QR code.
+- [x] 5.3 Criar o caso de uso `UpdateUserWhatsAppSessionUseCase` para salvar a sessão do WhatsApp associada ao usuário.
+- [x] 5.4 Implementar a lógica no `InitializeWhatsAppClientUseCase` para carregar a sessão do usuário ao inicializar o cliente.
+- [x] 5.5 Criar um `WhatsAppGateway` que escuta por novas mensagens e dispara um evento ou chama um caso de uso para processá-las.
+- [x] 5.6 Desenvolver um endpoint na API (`GET /api/v1/whatsapp/qr`) que executa o `InitializeWhatsAppClientUseCase` e retorna o QR code.
+- [x] 5.7 Implementar a persistência da sessão do cliente no `UpdateUserWhatsAppSessionUseCase`, atualizando a entidade `User`.
 
 ## Sequenciamento
 - **Bloqueado por:** 3.0 (Desenvolvimento do Core do Usuário - Backend).

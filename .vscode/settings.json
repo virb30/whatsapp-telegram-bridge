@@ -7,5 +7,6 @@
   "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "jestrunner.jestCommand": "yarn test"
+  "jestrunner.jestCommand": "yarn test",
+  "nxConsole.generateAiAgentRules": true
 }
