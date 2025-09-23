@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { LoginPage } from './pages/Login';
 import { RegisterPage } from './pages/Register';
 import { useAuthStore } from './store/auth.store';
+import { WhatsAppConnectPage } from './pages/WhatsAppConnect';
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated } = useAuthStore();
@@ -34,6 +35,7 @@ export function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<PrivateRoute><div className="p-6">Dashboard</div></PrivateRoute>} />
+        <Route path="/whatsapp/connect" element={<PrivateRoute><WhatsAppConnectPage /></PrivateRoute>} />
       </Routes>
       {/* END: routes */}
     </div>
