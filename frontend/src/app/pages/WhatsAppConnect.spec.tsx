@@ -23,10 +23,12 @@ describe('WhatsAppConnectPage', () => {
   });
 
   it('exibe estado inicial e busca QR code', async () => {
-    (http.get as any).mockResolvedValueOnce({ data: { status: 'qr', qrCode: 'data:image/png;base64,AAA' } });
+    (http.get as any).mockResolvedValueOnce({
+      data: { status: 'qr', qrCode: 'data:image/png;base64,AAA' },
+    });
 
     render(
-      <MemoryRouter initialEntries={[{ pathname: '/whatsapp/connect' }]}> 
+      <MemoryRouter initialEntries={[{ pathname: '/whatsapp/connect' }]}>
         <Routes>
           <Route path="/whatsapp/connect" element={<WhatsAppConnectPage />} />
         </Routes>
@@ -34,10 +36,12 @@ describe('WhatsAppConnectPage', () => {
     );
 
     await waitFor(() => {
-      expect(http.get).toHaveBeenCalledWith('/api/v1/whatsapp/qr');
+      expect(http.get).toHaveBeenCalledWith('/whatsapp/qr');
     });
 
-    const waitingText = await screen.findByText(/aguardando leitura do qr code/i);
+    const waitingText = await screen.findByText(
+      /aguardando leitura do qr code/i,
+    );
     expect(Boolean(waitingText)).toBe(true);
 
     const img = await screen.findByAltText(/qr code do whatsapp/i);
@@ -57,5 +61,3 @@ describe('WhatsAppConnectPage', () => {
     expect(Boolean(ok)).toBe(true);
   });
 });
-
-

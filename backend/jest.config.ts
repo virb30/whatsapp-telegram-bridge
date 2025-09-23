@@ -1,29 +1,12 @@
-import type {Config} from 'jest';
-
-const config: Config = {
+/* eslint-disable */
+export default {
   displayName: 'backend',
-  moduleFileExtensions: [
-    'js',
-    'json',
-    'ts'
-  ],
-  rootDir: 'src',
-  testRegex: '.*\\.spec\\.ts$',
-  transform: {
-    '^.+\\.(t|j)s$': '@swc/jest'
-  },
-  transformIgnorePatterns: [
-    'node_modules/(?!uuid)',
-     "\\.pnp\\.[^\\/]+$"
-  ],
-  collectCoverageFrom: [
-    '**/*.(t|j)s'
-  ],
-  coverageDirectory: '../coverage',
+  preset: '../jest.preset.js',
   testEnvironment: 'node',
-  moduleNameMapper: {
-    '^src/(.*)$': '<rootDir>/$1'
-  }
+  transform: {
+    '^.+\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
+  },
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../coverage/backend',
+  transformIgnorePatterns: ['/node_modules/(?!uuid)'],
 };
-
-export default config;

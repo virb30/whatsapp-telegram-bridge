@@ -20,7 +20,10 @@ export type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set, get) => {
-  const initialToken = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  const initialToken =
+    typeof localStorage !== 'undefined'
+      ? localStorage.getItem('auth_token')
+      : null;
 
   return {
     isAuthenticated: Boolean(initialToken),
@@ -31,19 +34,31 @@ export const useAuthStore = create<AuthState>((set, get) => {
     async login({ email, password }) {
       set({ loading: true, error: null });
       try {
-        const res = await http.post('/api/v1/auth/login', { email, password });
+        const res = await http.post('/auth/login', { email, password });
         const { token, user } = res.data as { token: string; user: AuthUser };
         localStorage.setItem('auth_token', token);
-        set({ isAuthenticated: true, token, user, loading: false, error: null });
+        set({
+          isAuthenticated: true,
+          token,
+          user,
+          loading: false,
+          error: null,
+        });
       } catch (err: any) {
         const message = err?.response?.data?.message ?? 'Falha ao autenticar';
-        set({ loading: false, error: message, isAuthenticated: false, token: null, user: null });
+        set({
+          loading: false,
+          error: message,
+          isAuthenticated: false,
+          token: null,
+          user: null,
+        });
       }
     },
     async register({ email, password }) {
       set({ loading: true, error: null });
       try {
-        await http.post('/api/v1/users', { email, password });
+        await http.post('/users', { email, password });
         await get().login({ email, password });
       } catch (err: any) {
         const message = err?.response?.data?.message ?? 'Falha ao cadastrar';
@@ -55,18 +70,24 @@ export const useAuthStore = create<AuthState>((set, get) => {
       set({ isAuthenticated: false, token: null, user: null });
     },
     hydrateFromStorage() {
-      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      const token =
+        typeof localStorage !== 'undefined'
+          ? localStorage.getItem('auth_token')
+          : null;
       set({ isAuthenticated: Boolean(token), token });
     },
     async hydrateUser() {
-      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      const token =
+        typeof localStorage !== 'undefined'
+          ? localStorage.getItem('auth_token')
+          : null;
       if (!token) {
         set({ isAuthenticated: false, token: null, user: null });
         return;
       }
       set({ isAuthenticated: true, token, loading: true, error: null });
       try {
-        const res = await http.get('/api/v1/auth/me');
+        const res = await http.get('/auth/me');
         const me = res.data as AuthUser;
         set({ user: me, loading: false });
       } catch (err: any) {
@@ -78,5 +99,3 @@ export const useAuthStore = create<AuthState>((set, get) => {
 });
 
 export const createAuthStore = () => useAuthStore.getState();
-
-

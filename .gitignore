@@ -32,3 +32,8 @@ coverage
 out
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
+
+.env.*
+!.env.example
+data/*.sqlite
+data

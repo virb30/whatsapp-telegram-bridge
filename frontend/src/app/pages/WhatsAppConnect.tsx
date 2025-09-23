@@ -16,7 +16,7 @@ export function WhatsAppConnectPage() {
 
     const fetchQr = async () => {
       try {
-        const res = await http.get('/api/v1/whatsapp/qr');
+        const res = await http.get('/whatsapp/qr');
         const data = res.data as QrResponse;
         setStatus(data.status);
         if (data.status === 'qr') {
@@ -79,6 +79,3 @@ export function WhatsAppConnectPage() {
     </div>
   );
 }
-
-
-

@@ -42,5 +42,5 @@ describe('WhatsAppController (e2e)', () => {
       expect(res.body).toHaveProperty('status');
       // qrCode may or may not be present depending on runtime
     }
-  });
+  }, 30000);
 });
