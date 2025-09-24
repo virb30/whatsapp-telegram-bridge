@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: true
 blocked_by: ["3.0"]
 ---
@@ -25,15 +25,15 @@ Implementar os casos de uso e a infraestrutura para a integração com o Telegra
 - Implementar uma função para enviar mensagens a um grupo específico.
 
 ## Subtarefas
-- [ ] 7.1 Adicionar a dependência `gram.js` ao projeto.
-- [ ] 7.2 Criar o caso de uso `ConnectTelegramUseCase` para iniciar a conexão e enviar o número de telefone.
-- [ ] 7.3 Criar o caso de uso `SignInTelegramUseCase` para completar a autenticação com o código e a senha 2FA.
-- [ ] 7.4 Criar o caso de uso `SendMessageToTelegramUseCase` para enviar mensagens a um grupo específico.
-- [ ] 7.5 Desenvolver os endpoints da API para o fluxo de login:
+- [x] 7.1 Adicionar a dependência `gram.js` ao projeto.
+- [x] 7.2 Criar o caso de uso `ConnectTelegramUseCase` para iniciar a conexão e enviar o número de telefone.
+- [x] 7.3 Criar o caso de uso `SignInTelegramUseCase` para completar a autenticação com o código e a senha 2FA.
+- [x] 7.4 Criar o caso de uso `SendMessageToTelegramUseCase` para enviar mensagens a um grupo específico.
+- [x] 7.5 Desenvolver os endpoints da API para o fluxo de login:
     - `POST /api/v1/telegram/connect` (executa `ConnectTelegramUseCase`).
     - `POST /api/v1/telegram/signin` (executa `SignInTelegramUseCase`).
-- [ ] 7.6 Implementar a lógica para salvar e carregar a sessão do Telegram (`stringSession`) através de um caso de uso `UpdateUserTelegramSessionUseCase`.
-- [ ] 7.7 Implementar o tratamento de erros nos casos de uso para senhas 2FA incorretas ou códigos de login inválidos.
+- [x] 7.6 Implementar a lógica para salvar e carregar a sessão do Telegram (`stringSession`) através de um caso de uso `UpdateUserTelegramSessionUseCase`.
+- [x] 7.7 Implementar o tratamento de erros nos casos de uso para senhas 2FA incorretas ou códigos de login inválidos.
 
 ## Sequenciamento
 - **Bloqueado por:** 3.0 (Desenvolvimento do Core do Usuário - Backend).
