@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: false
 blocked_by: ["3.0"]
 ---
@@ -13,7 +13,7 @@ blocked_by: ["3.0"]
 <unblocks>["10.0", "11.0"]</unblocks>
 </task_context>
 
-# Tarefa 9.0: Desenvolvimento do Core da Ponte (Backend) - Arquitetura de Casos de Uso
+# Tarefa 9.0: Desenvolvimento do Core da Ponte (Backend) - Arquitetura de Casos de Uso ✅ CONCLUÍDA
 
 ## Visão Geral
 Implementar os casos de uso para o gerenciamento de pontes (mapeamentos de grupo). Isso inclui a criação, listagem e exclusão de pontes, associando-as ao usuário autenticado, seguindo a arquitetura de casos de uso.
@@ -24,13 +24,13 @@ Implementar os casos de uso para o gerenciamento de pontes (mapeamentos de grupo
 - Permitir que um usuário autenticado exclua um de seus mapeamentos.
 
 ## Subtarefas
-- [ ] 9.1 Criar o caso de uso `CreateBridgeUseCase`.
-- [ ] 9.2 Criar o caso de uso `ListBridgesUseCase`.
-- [ ] 9.3 Criar o caso de uso `DeleteBridgeUseCase`.
-- [ ] 9.4 Implementar o `CreateBridgeUseCase` para salvar a nova ponte.
-- [ ] 9.5 Implementar o `ListBridgesUseCase` para listar as pontes de um usuário.
-- [ ] 9.6 Implementar o `DeleteBridgeUseCase` para excluir uma ponte, verificando a propriedade.
-- [ ] 9.7 Criar os endpoints da API (protegidos por autenticação):
+- [x] 9.1 Criar o caso de uso `CreateBridgeUseCase`.
+- [x] 9.2 Criar o caso de uso `ListBridgesUseCase`.
+- [x] 9.3 Criar o caso de uso `DeleteBridgeUseCase`.
+- [x] 9.4 Implementar o `CreateBridgeUseCase` para salvar a nova ponte.
+- [x] 9.5 Implementar o `ListBridgesUseCase` para listar as pontes de um usuário.
+- [x] 9.6 Implementar o `DeleteBridgeUseCase` para excluir uma ponte, verificando a propriedade.
+- [x] 9.7 Criar os endpoints da API (protegidos por autenticação):
     - `POST /api/v1/bridges` (executa `CreateBridgeUseCase`).
     - `GET /api/v1/bridges` (executa `ListBridgesUseCase`).
     - `DELETE /api/v1/bridges/:id` (executa `DeleteBridgeUseCase`).

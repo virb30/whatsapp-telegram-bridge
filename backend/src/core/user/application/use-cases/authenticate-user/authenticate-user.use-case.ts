@@ -37,7 +37,7 @@ export class AuthenticateUserUseCase {
     if (!isPasswordValid) {
       throw new InvalidCredentialsError();
     }
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id.value, email: user.email.value };
     return { access_token: await this.jwtService.signAsync(payload) };
   }
 }

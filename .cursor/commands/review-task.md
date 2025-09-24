@@ -93,3 +93,5 @@ Sua saída final deve ser um relatório detalhado do processo de conclusão da t
 - Sua tarefa **SERÁ REJEITADA** se você não seguir as instruções acima
 - **VOCÊ SEMPRE** precisa mostrar os problemas de feedback e recomendações
 - Antes de terminar **VOCÊ DEVE** pedir uma revisão final para garantir que terminou de fato
+- **VOCÊ DEVE** revisar todo código novo implementado referente à tarefa sendo revisada
+- **VOCÊ NÃO DEVE** implementar nenhuma melhoria ou correção, apenas registrar o que precisa e pode ser melhorado

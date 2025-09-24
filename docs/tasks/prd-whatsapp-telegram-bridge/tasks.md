@@ -14,13 +14,13 @@
 ## Fase 2: Conexão com Plataformas
 
 - [x] 5.0 **Backend - Integração com WhatsApp:** Implementar a conexão via `whatsapp-web.js` e geração de QR code.
-- [ ] 6.0 **Frontend - Conexão WhatsApp:** Criar a tela para exibição do QR code.
-- [ ] 7.0 **Backend - Integração com Telegram:** Implementar a conexão via `gram.js` com fluxo de autenticação completo.
-- [ ] 8.0 **Frontend - Conexão Telegram:** Criar as telas para o fluxo de autenticação do Telegram.
+- [x] 6.0 **Frontend - Conexão WhatsApp:** Criar a tela para exibição do QR code.
+- [x] 7.0 **Backend - Integração com Telegram:** Implementar a conexão via `gram.js` com fluxo de autenticação completo.
+- [x] 8.0 **Frontend - Conexão Telegram:** Criar as telas para o fluxo de autenticação do Telegram.
 
 ## Fase 3: Funcionalidade Principal
 
-- [ ] 9.0 **Backend - Core da Ponte:** Implementar a API para criar, listar e deletar mapeamentos de grupos.
+- [x] 9.0 **Backend - Core da Ponte:** Implementar a API para criar, listar e deletar mapeamentos de grupos.
 - [ ] 10.0 **Frontend - Gerenciamento de Pontes:** Criar a interface para o usuário gerenciar seus mapeamentos e ver o status.
 - [ ] 11.0 **Implementação do Serviço de Encaminhamento:** Desenvolver o worker que encaminha as mensagens do WhatsApp para o Telegram.
 

@@ -119,6 +119,31 @@ export class Bridge {
 -   `POST /api/v1/telegram/signin`: Finaliza a conexão (envia código e senha 2FA, se houver).
 -   `GET /api/v1/status`: Retorna o status das conexões com WhatsApp e Telegram.
 
+#### Contratos de API - Bridges
+
+-   `GET /api/v1/bridges`
+    -   Response 200:
+    ```json
+    {
+      "items": [
+        { "id": "<uuid>", "whatsappGroupId": "<string>", "telegramGroupId": "<string>" }
+      ]
+    }
+    ```
+
+-   `POST /api/v1/bridges`
+    -   Request body:
+    ```json
+    { "whatsappGroupId": "<string>", "telegramGroupId": "<string>" }
+    ```
+    -   Response 201:
+    ```json
+    { "id": "<uuid>" }
+    ```
+
+-   `DELETE /api/v1/bridges/:id`
+    -   Response 204: Sem corpo
+
 ## Pontos de Integração
 
 -   **WhatsApp:** A integração será feita com a biblioteca `whatsapp-web.js`. A autenticação será via QR code e a sessão será persistida no banco de dados para evitar logins repetidos. O tratamento de erros para desconexão será crucial.
