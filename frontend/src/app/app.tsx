@@ -4,6 +4,7 @@ import { LoginPage } from './pages/Login';
 import { RegisterPage } from './pages/Register';
 import { useAuthStore } from './store/auth.store';
 import { WhatsAppConnectPage } from './pages/WhatsAppConnect';
+import { TelegramConnectPage } from './pages/TelegramConnect';
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated } = useAuthStore();
@@ -36,6 +37,7 @@ export function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<PrivateRoute><div className="p-6">Dashboard</div></PrivateRoute>} />
         <Route path="/whatsapp/connect" element={<PrivateRoute><WhatsAppConnectPage /></PrivateRoute>} />
+        <Route path="/telegram/connect" element={<PrivateRoute><TelegramConnectPage /></PrivateRoute>} />
       </Routes>
       {/* END: routes */}
     </div>

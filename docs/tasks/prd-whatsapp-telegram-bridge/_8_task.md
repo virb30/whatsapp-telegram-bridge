@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: false
 blocked_by: ["6.0", "7.0"]
 ---
@@ -25,11 +25,11 @@ Desenvolver o fluxo de telas no frontend para a conexão com o Telegram, guiando
 - Fornecer feedback claro ao usuário em cada passo do processo.
 
 ## Subtarefas
-- [ ] 8.1 Desenvolver a página de conexão com o Telegram com um formulário para o número de telefone.
-- [ ] 8.2 Após enviar o número, exibir um novo formulário para o código de verificação e, opcionalmente, a senha de 2FA.
-- [ ] 8.3 Implementar a lógica para chamar os endpoints do backend na sequência correta.
-- [ ] 8.4 Tratar e exibir mensagens de erro retornadas pela API (ex: "código inválido", "senha incorreta").
-- [ ] 8.5 Redirecionar o usuário ou atualizar a interface após a conexão ser estabelecida com sucesso.
+- [x] 8.1 Desenvolver a página de conexão com o Telegram com um formulário para o número de telefone.
+- [x] 8.2 Após enviar o número, exibir um novo formulário para o código de verificação e, opcionalmente, a senha de 2FA.
+- [x] 8.3 Implementar a lógica para chamar os endpoints do backend na sequência correta.
+- [x] 8.4 Tratar e exibir mensagens de erro retornadas pela API (ex: "código inválido", "senha incorreta").
+- [x] 8.5 Redirecionar o usuário ou atualizar a interface após a conexão ser estabelecida com sucesso.
 
 ## Sequenciamento
 - **Bloqueado por:** 6.0 (Frontend - Conexão WhatsApp), 7.0 (Backend - Integração com Telegram).
