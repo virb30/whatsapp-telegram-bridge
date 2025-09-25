@@ -18,6 +18,15 @@ export default defineConfig([
       "test/**",
     ],
   },
+  {
+    files: ["**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        // Necessário quando há múltiplos tsconfig roots (frontend/backend)
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   ...tsRecommendedInSrc,
   {
     files: [

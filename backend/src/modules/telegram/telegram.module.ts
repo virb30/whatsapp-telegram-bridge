@@ -35,6 +35,7 @@ import { TypeormTelegramLoginStateRepository } from 'src/core/telegram/infra/rep
       useClass: TypeormTelegramLoginStateRepository,
     },
   ],
+  exports: [SendMessageToTelegramUseCase],
 })
 export class TelegramModule {}
 

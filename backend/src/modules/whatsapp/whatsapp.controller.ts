@@ -10,7 +10,7 @@ export class WhatsAppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('qr')
-  async getQr(@Req() req: any) {
+  async getQr(@Req() req: { user: { userId: string } }) {
     const userId: string = req.user.userId;
     const result = await this.initializeClient.execute({ userId });
     return result; // { status, qrCode }

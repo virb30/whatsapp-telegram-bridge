@@ -13,15 +13,15 @@ export class DatabaseStore {
     return !!json;
   }
 
-  async get(): Promise<any> {
+  async get(): Promise<Record<string, unknown> | null> {
     // Prefere inicial se fornecida; senão busca repo
     const raw =
       this.initialSessionJson ?? (await this.repo.getSessionJson(this.userId));
-    if (!raw) return null as unknown as object;
+    if (!raw) return null;
     try {
       return JSON.parse(raw);
     } catch {
-      return null as unknown as object;
+      return null;
     }
   }
 
@@ -42,7 +42,5 @@ export class DatabaseStore {
     await this.repo.setSessionJson(this.userId, null);
   }
 
-  async load(): Promise<any> {
-    return this.get();
-  }
+  async load(): Promise<Record<string, unknown> | null> { return this.get(); }
 }

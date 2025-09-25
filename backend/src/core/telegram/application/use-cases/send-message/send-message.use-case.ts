@@ -7,7 +7,9 @@ import {
 export interface SendMessageToTelegramInputDto {
   readonly userId: string;
   readonly groupId: string;
-  readonly message: string;
+  readonly message?: string;
+  readonly photoBase64?: string;
+  readonly caption?: string;
 }
 
 @Injectable()
@@ -22,6 +24,8 @@ export class SendMessageToTelegramUseCase {
       userId: input.userId,
       groupId: input.groupId,
       message: input.message,
+      photoBase64: input.photoBase64,
+      caption: input.caption,
     });
   }
 }

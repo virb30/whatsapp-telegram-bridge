@@ -8,10 +8,6 @@ import {
   type InitializeWhatsAppClientOutput,
 } from './initialize-client.dto';
 import {
-  USER_REPOSITORY,
-  type UserRepositoryInterface,
-} from 'src/core/user/application/interfaces/user.repository';
-import {
   WHATSAPP_SESSION_REPOSITORY,
   type WhatsAppSessionRepositoryInterface,
 } from '../../interfaces/whatsapp-session.repository';

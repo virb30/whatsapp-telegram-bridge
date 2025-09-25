@@ -44,5 +44,6 @@ import { WhatsAppGateway } from 'src/core/whatsapp/application/gateway/whatsapp.
       useClass: TypeormWhatsAppSessionRepository,
     },
   ],
+  exports: [WhatsAppGateway, WHATSAPP_EVENTS],
 })
 export class WhatsAppModule {}

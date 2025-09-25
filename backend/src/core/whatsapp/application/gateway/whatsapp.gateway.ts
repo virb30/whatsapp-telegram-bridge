@@ -28,6 +28,7 @@ export class WhatsAppGateway {
         chatId: payload.chatId,
         fromMe: payload.fromMe,
         body: payload.body,
+        photoBase64: payload.photoBase64,
         timestamp: payload.timestamp,
       });
       this.logger.debug(

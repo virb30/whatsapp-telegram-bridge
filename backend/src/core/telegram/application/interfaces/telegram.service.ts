@@ -26,7 +26,9 @@ export type SignInTelegramResult =
 export interface SendMessageToTelegramParams {
   readonly userId: string;
   readonly groupId: string;
-  readonly message: string;
+  readonly message?: string;
+  readonly photoBase64?: string; // base64 sem prefixo data URL
+  readonly caption?: string;
 }
 
 export interface TelegramServiceInterface {

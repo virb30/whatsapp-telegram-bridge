@@ -51,6 +51,19 @@ export class TypeormBridgeRepository implements BridgeRepositoryInterface {
   async delete(id: string): Promise<void> {
     await this.repo.delete({ id });
   }
+
+  async findAll(): Promise<Bridge[]> {
+    const list = await this.repo.find();
+    return list.map((e) =>
+      new Bridge({
+        id: e.id,
+        userId: e.userId,
+        whatsappGroupId: e.whatsappGroupId,
+        telegramGroupId: e.telegramGroupId,
+        createdAt: e.createdAt,
+      }),
+    );
+  }
 }
 
 

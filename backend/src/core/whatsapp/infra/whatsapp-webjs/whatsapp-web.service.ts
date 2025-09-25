@@ -13,12 +13,13 @@ import { DatabaseStore } from './database.store';
 
 // Lazy import para evitar custos em testes que não usam a lib
 // Evitar any: definimos as assinaturas mínimas necessárias
-type WhatsAppClientType = new (opts: { authStrategy: any }) => {
+type WhatsAppClientInstance = {
   on: (event: string, cb: (...args: unknown[]) => void) => void;
   initialize: () => Promise<void>;
 };
+type WhatsAppClientType = new (opts: { authStrategy: unknown }) => WhatsAppClientInstance;
 type LocalAuthType = new (opts: { clientId: string }) => unknown;
-type RemoteAuthType = new (opts: any) => unknown;
+type RemoteAuthType = new (opts: { clientId: string; store: object; backupSyncIntervalMs?: number }) => unknown;
 
 let WhatsAppClientLib: WhatsAppClientType | undefined;
 let LocalAuthLib: LocalAuthType | undefined;
@@ -31,7 +32,7 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
     @Inject(WHATSAPP_SESSION_REPOSITORY)
     private readonly sessionRepo: WhatsAppSessionRepositoryInterface,
   ) {}
-  private userIdToClient: Map<string, any> = new Map();
+  private userIdToClient: Map<string, WhatsAppClientInstance> = new Map();
 
   async initializeClient(
     params: InitializeClientParams,
@@ -45,7 +46,7 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
         .RemoteAuth;
     }
 
-    let client = this.userIdToClient.get(params.userId);
+    let client: WhatsAppClientInstance | undefined = this.userIdToClient.get(params.userId);
     if (client) {
       return { status: 'ready' };
     }
@@ -74,16 +75,16 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
       });
     }
 
-    client.on('qr', (qr: string) => {
+    client.on('qr', ((qr: string) => {
       events.qr = qr;
-    });
+    }) as unknown as (...args: unknown[]) => void);
 
     // Eventos úteis para controle de sessão
-    client.on('authenticated', async (/* session */) => {
+    client.on('authenticated', (async () => {
       // Com RemoteAuth, a persistência acontece via store.save
       // No fallback LocalAuth não há JSON disponível; apenas garantimos que existe sessão local
-    });
-    client.on('disconnected', async () => {
+    }) as unknown as (...args: unknown[]) => void);
+    client.on('disconnected', (async () => {
       try {
         await this.updateSession.execute({
           userId: params.userId,
@@ -92,7 +93,7 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
       } catch {
         // ignore
       }
-    });
+    }) as unknown as (...args: unknown[]) => void);
 
     await client.initialize();
     this.userIdToClient.set(params.userId, client);
@@ -110,18 +111,32 @@ export class WhatsAppWebJsService implements WhatsAppServiceInterface {
       chatId: string;
       fromMe: boolean;
       body: string;
+      photoBase64?: string;
       timestamp: number;
     }) => void,
   ): void {
     const client = this.userIdToClient.get(userId);
     if (!client) return;
-    client.on('message_create', (msg: any) => {
+    client.on('message_create', (async (msg: { from: string; id?: { fromMe?: boolean }; body?: string; timestamp?: number; hasMedia?: boolean; downloadMedia?: () => Promise<{ data?: string; mimetype?: string } | null>; _data?: { mimetype?: string } }) => {
+      let photoBase64: string | undefined;
+      try {
+        if (msg.hasMedia) {
+          const media = await msg.downloadMedia?.();
+          const mimetype: string | undefined = media?.mimetype ?? msg?._data?.mimetype;
+          if (media?.data && typeof media.data === 'string' && mimetype?.startsWith('image/')) {
+            photoBase64 = media.data;
+          }
+        }
+      } catch {
+        // ignore download errors; fallback to text only
+      }
       handler({
         chatId: msg.from,
-        fromMe: msg.id.fromMe,
+        fromMe: msg.id?.fromMe ?? false,
         body: msg.body ?? '',
+        photoBase64,
         timestamp: msg.timestamp ?? Date.now() / 1000,
       });
-    });
+    }) as unknown as (...args: unknown[]) => void);
   }
 }

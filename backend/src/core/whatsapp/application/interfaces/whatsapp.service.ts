@@ -20,6 +20,7 @@ export interface WhatsAppServiceInterface {
       chatId: string;
       fromMe: boolean;
       body: string;
+      photoBase64?: string;
       timestamp: number;
     }) => void,
   ): void;

@@ -40,7 +40,7 @@ interface TelegramClientLike {
     phoneCodeHash: string;
     password?: string;
   }): Promise<void>;
-  sendMessage(entity: string, message: { message: string }): Promise<void>;
+  sendMessage(entity: string, message: { message?: string; file?: { file: Buffer }; caption?: string }): Promise<void>;
 }
 
 @Injectable()
@@ -138,7 +138,12 @@ export class GramJsTelegramService implements TelegramServiceInterface {
 
   async sendMessage(params: SendMessageToTelegramParams): Promise<void> {
     const client = await this.getClient(params.userId);
-    await client.sendMessage(params.groupId, { message: params.message });
+    if (params.photoBase64) {
+      const buffer = Buffer.from(params.photoBase64, 'base64');
+      await client.sendMessage(params.groupId, { file: { file: buffer }, caption: params.caption });
+      return;
+    }
+    await client.sendMessage(params.groupId, { message: params.message ?? '' });
   }
 
   async getStatus(userId: string): Promise<TelegramStatus> {
