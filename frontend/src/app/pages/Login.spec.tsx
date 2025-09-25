@@ -20,7 +20,8 @@ describe('LoginPage', () => {
   });
 
   it('deve permitir login com credenciais válidas e redirecionar', async () => {
-    (axios as any).create().post.mockResolvedValueOnce({ data: { token: 'tok', user: { id: '1', email: 'a@b.com' } } });
+    (axios as any).create().post.mockResolvedValueOnce({ data: { access_token: 'tok' } });
+    (axios as any).create().get = vi.fn().mockResolvedValueOnce({ data: { id: '1', email: 'a@b.com' } });
     render(
       <BrowserRouter>
         <LoginPage />

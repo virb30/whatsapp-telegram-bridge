@@ -1,9 +1,10 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { useAuthStore } from '../store/auth.store';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function LoginPage() {
   const { login, loading, error } = useAuthStore();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +19,8 @@ export function LoginPage() {
     setTouched(true);
     if (!email || !password) return;
     await login({ email, password });
+    // redireciona após login bem-sucedido
+    navigate('/');
   };
 
   return (
@@ -29,6 +32,7 @@ export function LoginPage() {
           <input
             id="email"
             type="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 w-full rounded border p-2"
@@ -43,6 +47,7 @@ export function LoginPage() {
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full rounded border p-2 pr-20"

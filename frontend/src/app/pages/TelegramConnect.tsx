@@ -21,7 +21,7 @@ export function TelegramConnectPage() {
     if (!phone) return;
     setLoading(true);
     try {
-      const res = await http.post('/api/v1/telegram/connect', { phone });
+      const res = await http.post('/v1/telegram/connect', { phone });
       const data = res.data as ConnectResponse;
       if (data.status === 'code_requested') {
         setStep('code');
@@ -40,7 +40,7 @@ export function TelegramConnectPage() {
     if (!phone || !code) return;
     setLoading(true);
     try {
-      const res = await http.post('/api/v1/telegram/signin', {
+      const res = await http.post('/v1/telegram/signin', {
         phone,
         code,
         password: password || undefined,

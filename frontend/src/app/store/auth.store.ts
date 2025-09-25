@@ -34,16 +34,18 @@ export const useAuthStore = create<AuthState>((set, get) => {
     async login({ email, password }) {
       set({ loading: true, error: null });
       try {
-        const res = await http.post('/auth/login', { email, password });
-        const { token, user } = res.data as { token: string; user: AuthUser };
-        localStorage.setItem('auth_token', token);
+        const res = await http.post('/v1/auth/login', { email, password });
+        const { access_token } = res.data as { access_token: string };
+        localStorage.setItem('auth_token', access_token);
         set({
           isAuthenticated: true,
-          token,
-          user,
+          token: access_token,
+          user: null,
           loading: false,
           error: null,
         });
+        // hidrata dados do usuário em background
+        void get().hydrateUser();
       } catch (err: any) {
         const message = err?.response?.data?.message ?? 'Falha ao autenticar';
         set({
@@ -58,7 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
     async register({ email, password }) {
       set({ loading: true, error: null });
       try {
-        await http.post('/users', { email, password });
+        await http.post('/v1/users', { email, password });
         await get().login({ email, password });
       } catch (err: any) {
         const message = err?.response?.data?.message ?? 'Falha ao cadastrar';
@@ -87,7 +89,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
       }
       set({ isAuthenticated: true, token, loading: true, error: null });
       try {
-        const res = await http.get('/auth/me');
+        const res = await http.get('/v1/auth/me');
         const me = res.data as AuthUser;
         set({ user: me, loading: false });
       } catch (err: any) {

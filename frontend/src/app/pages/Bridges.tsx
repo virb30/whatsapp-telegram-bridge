@@ -18,7 +18,7 @@ export function BridgesPage() {
 		setLoading(true);
 		setError(null);
 		try {
-			const res = await http.get('/api/v1/bridges');
+			const res = await http.get('/v1/bridges');
 			setItems((res.data as { items: BridgeItem[] }).items);
 		} catch (e: any) {
 			setError(e?.response?.data?.message ?? 'Falha ao carregar pontes');
@@ -36,7 +36,7 @@ export function BridgesPage() {
 		if (!wa || !tg) return;
 		setError(null);
 		try {
-			await http.post('/api/v1/bridges', {
+			await http.post('/v1/bridges', {
 				whatsappGroupId: wa,
 				telegramGroupId: tg,
 			});
@@ -51,7 +51,7 @@ export function BridgesPage() {
 	async function handleDelete(id: string) {
 		setError(null);
 		try {
-			await http.delete(`/api/v1/bridges/${id}`);
+			await http.delete(`/v1/bridges/${id}`);
 			setItems((prev) => prev.filter((i) => i.id !== id));
 		} catch (e: any) {
 			setError(e?.response?.data?.message ?? 'Falha ao remover ponte');

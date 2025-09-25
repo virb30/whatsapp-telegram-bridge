@@ -42,8 +42,9 @@ describe('auth.store', () => {
   it('deve realizar login com sucesso e persistir o token', async () => {
     const token = 'jwt.token.mock';
     (axios as any).create().post.mockResolvedValueOnce({
-      data: { token, user: { id: 'u1', email: 'test@example.com' } },
+      data: { access_token: token },
     });
+    (axios as any).create().get = vi.fn().mockResolvedValueOnce({ data: { id: 'u1', email: 'test@example.com' } });
 
     const { login } = useAuthStore.getState();
     await login({ email: 'test@example.com', password: 'secret' });
@@ -73,9 +74,8 @@ describe('auth.store', () => {
     const token = 'jwt.token.created';
     (axios as any).create().post
       .mockResolvedValueOnce({ data: { id: 'u2', email: 'new@example.com' } }) // /users
-      .mockResolvedValueOnce({
-        data: { token, user: { id: 'u2', email: 'new@example.com' } }, // /auth/login
-      });
+      .mockResolvedValueOnce({ data: { access_token: token } }); // /auth/login
+    (axios as any).create().get = vi.fn().mockResolvedValueOnce({ data: { id: 'u2', email: 'new@example.com' } });
 
     const { register } = useAuthStore.getState();
     await register({ email: 'new@example.com', password: 'secret' });
