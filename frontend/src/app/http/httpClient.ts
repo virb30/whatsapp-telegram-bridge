@@ -5,7 +5,6 @@ const baseURL =
   (typeof import.meta !== 'undefined' &&
     (import.meta as any).env?.VITE_API_URL) ||
   '/';
-console.log('baseURL', baseURL);
 export const http = axios.create({ baseURL });
 
 http.interceptors.request.use((config: InternalAxiosRequestConfig) => {

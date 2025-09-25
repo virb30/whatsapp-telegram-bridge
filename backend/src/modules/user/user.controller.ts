@@ -10,7 +10,6 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() body: CreateUserInputDto): Promise<CreateUserOutput> {
-    console.log('create user', body);
     return this.createUserUseCase.execute(body);
   }
 }
