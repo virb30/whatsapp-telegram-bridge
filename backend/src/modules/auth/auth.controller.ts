@@ -20,7 +20,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async me(@Req() req: { user: { userId: string; email: string } }) {
-    // expõe id e email autenticados a partir do payload do JWT
     return { id: req.user.userId, email: req.user.email };
   }
 }

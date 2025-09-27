@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSSE } from '../hooks/useSSE';
 import { QRCodeSVG } from 'qrcode.react';
+import { useAuthStore } from '../store/auth.store';
+import { useNavigate } from 'react-router-dom';
 
 type QrResponse = {
   status: 'qr' | 'ready' | 'error' | 'connecting';
@@ -10,10 +12,17 @@ type QrResponse = {
 export function WhatsAppConnectPage() {
   const [status, setStatus] = useState<QrResponse['status']>('connecting');
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
 
-  const { data, error, loading } = useSSE<QrResponse>("http://localhost:3000/api/v1/whatsapp/status");
+  useEffect(() => {
+    if (!user?.id) {
+      navigate('/login');
+    }
+  }, [user?.id, navigate]);
 
-  
+  const { data, error, loading } = useSSE<QrResponse>(`http://localhost:3000/api/v1/whatsapp/status/${user?.id}`);
+
   useEffect(() => {
     if (data?.qrCode) {
       setQrDataUrl(data.qrCode);

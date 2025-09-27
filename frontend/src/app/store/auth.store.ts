@@ -96,7 +96,6 @@ export const useAuthStore = create<AuthState>((set, get) => {
         const me = res.data as AuthUser;
         set({ user: me, loading: false });
       } catch (err: any) {
-        // Se o /me falhar, manter autenticado apenas com token e deixar user nulo
         set({ loading: false });
       }
     },
