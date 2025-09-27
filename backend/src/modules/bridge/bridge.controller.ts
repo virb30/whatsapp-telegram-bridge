@@ -18,7 +18,7 @@ import { DeleteBridgeUseCase } from '../../core/bridge/application/use-cases/del
 import { CreateBridgeBodyDto } from './dto/create-bridge.dto';
 
 @UseGuards(JwtAuthGuard)
-@Controller('api/v1/bridges')
+@Controller('bridges')
 export class BridgeController {
   constructor(
     private readonly createBridge: CreateBridgeUseCase,

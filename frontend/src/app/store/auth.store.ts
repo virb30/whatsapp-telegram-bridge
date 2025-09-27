@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { http } from '../http/httpClient';
+import Cookies from 'js-cookie';
 
 export type AuthUser = {
   id: string;
@@ -37,6 +38,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
         const res = await http.post('/v1/auth/login', { email, password });
         const { access_token } = res.data as { access_token: string };
         localStorage.setItem('auth_token', access_token);
+        Cookies.set('auth_token', access_token);
         set({
           isAuthenticated: true,
           token: access_token,
@@ -44,8 +46,8 @@ export const useAuthStore = create<AuthState>((set, get) => {
           loading: false,
           error: null,
         });
-        // hidrata dados do usuário em background
         void get().hydrateUser();
+        
       } catch (err: any) {
         const message = err?.response?.data?.message ?? 'Falha ao autenticar';
         set({
@@ -69,6 +71,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
     },
     logout() {
       localStorage.removeItem('auth_token');
+      Cookies.remove('auth_token');
       set({ isAuthenticated: false, token: null, user: null });
     },
     hydrateFromStorage() {

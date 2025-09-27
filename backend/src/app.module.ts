@@ -12,9 +12,11 @@ import { WhatsAppSessionOrmEntity } from './core/whatsapp/infra/repository/typeo
 import { TelegramLoginStateOrmEntity } from './core/telegram/infra/repository/typeorm/telegram-login-state.orm-entity';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import { ForwardingModule } from './modules/forwarding/forwarding.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.SQLITE_DB_PATH || 'data/dev.sqlite',

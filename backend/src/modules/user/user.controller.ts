@@ -3,7 +3,7 @@ import { CreateUserUseCase } from '../../core/user/application/use-cases/create-
 import { CreateUserInputDto } from './dto/create-user.dto';
 import { CreateUserOutput } from '../../core/user/application/use-cases/create-user/create-user.dto';
 
-@Controller('api/v1/users')
+@Controller('users')
 export class UserController {
   constructor(private readonly createUserUseCase: CreateUserUseCase) {}
 

@@ -17,7 +17,7 @@ class SignInTelegramDto {
   password?: string;
 }
 
-@Controller('api/v1/telegram')
+@Controller('telegram')
 export class TelegramController {
   constructor(
     private readonly connectUseCase: ConnectTelegramUseCase,

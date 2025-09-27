@@ -37,3 +37,7 @@ vitest.config.*.timestamp*
 !.env.example
 data/*.sqlite
 data
+
+chrome
+.wwebjs_auth
+.wwebjs_cache
