@@ -1,8 +1,13 @@
 import { EventEmitter2 } from "@nestjs/event-emitter";
-import { WhatsAppServiceInterface, WhatsAppStatus } from "../../application/interfaces/whatsapp-service.interface";
+import { WhatsAppServiceInterface } from "../../application/interfaces/whatsapp-service.interface";
 import { Client, LocalAuth } from "whatsapp-web.js";
 import { Injectable } from "@nestjs/common";
+import { WhatsAppQrEvent } from "../../domain/event/whatsapp-qr.event";
+import { WhatsAppReadyEvent } from "../../domain/event/whatsapp-ready.event";
+import { WhatsAppAuthFailureEvent } from "../../domain/event/whatsapp-auth-failure.event";
+import { WhatsAppDisconnectedEvent } from "../../domain/event/whatsapp-disconnected.event";
 
+const EVENT_NAME = 'whatsapp.status';
 
 @Injectable()
 export class WebjsWhatsAppServiceAdapter implements WhatsAppServiceInterface {
@@ -35,31 +40,22 @@ export class WebjsWhatsAppServiceAdapter implements WhatsAppServiceInterface {
     let oldQr: string | null = null;    
     client.on('qr', (qr) => {
       if (oldQr === qr) return;
-      this.eventEmitter.emit('whatsapp.status', {
-        status: 'qr',
-        qrCode: qr,
-      } as WhatsAppStatus);
+      this.eventEmitter.emit(EVENT_NAME, new WhatsAppQrEvent(userId, qr));
       oldQr = qr;
     }); 
 
     client.on('ready', () => {
       this.clients.set(userId, client);
-      this.eventEmitter.emit('whatsapp.status', {
-        status: 'ready',
-      } as WhatsAppStatus);
+      this.eventEmitter.emit(EVENT_NAME, new WhatsAppReadyEvent(userId));
     });
 
     client.on('auth_failure', () => {
-      this.eventEmitter.emit('whatsapp.status', {
-        status: 'auth_failure',
-      } as WhatsAppStatus);
+      this.eventEmitter.emit(EVENT_NAME, new WhatsAppAuthFailureEvent(userId));
     });
 
     client.on('disconnected', () => {
       this.clients.delete(userId);
-      this.eventEmitter.emit('whatsapp.status', {
-        status: 'disconnected',
-      } as WhatsAppStatus);
+      this.eventEmitter.emit(EVENT_NAME, new WhatsAppDisconnectedEvent(userId));
     });
   }
 }
