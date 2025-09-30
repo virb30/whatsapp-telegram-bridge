@@ -33,6 +33,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
     loading: false,
     error: null,
     async login({ email, password }) {
+      console.log('login');
       set({ loading: true, error: null });
       try {
         const res = await http.post('/v1/auth/login', { email, password });
@@ -47,7 +48,6 @@ export const useAuthStore = create<AuthState>((set, get) => {
           error: null,
         });
         void get().hydrateUser();
-        
       } catch (err: any) {
         const message = err?.response?.data?.message ?? 'Falha ao autenticar';
         set({
@@ -82,6 +82,7 @@ export const useAuthStore = create<AuthState>((set, get) => {
       set({ isAuthenticated: Boolean(token), token });
     },
     async hydrateUser() {
+      console.log('hydrateUser');
       const token =
         typeof localStorage !== 'undefined'
           ? localStorage.getItem('auth_token')

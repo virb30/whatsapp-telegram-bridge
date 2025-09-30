@@ -19,7 +19,6 @@ export function LoginPage() {
     setTouched(true);
     if (!email || !password) return;
     await login({ email, password });
-    // redireciona após login bem-sucedido
     navigate('/');
   };
 

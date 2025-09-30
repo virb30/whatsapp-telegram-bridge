@@ -22,12 +22,7 @@ export class WhatsAppController {
   @UseGuards(JwtAuthGuard)
   @Sse('status/:userId')
   getStatus(@Param('userId') userId: string): Observable<MessageEvent> {
-
-    this.initializeWhatsAppClientUseCase.execute({
-      userId,
-    });
-
-    return fromEvent(this.eventEmitter, 'whatsapp.status').pipe(
+    const observable = fromEvent(this.eventEmitter, 'whatsapp.status').pipe(
       map<unknown, MessageEvent>((args: unknown) => {
         const data = args as WhatsAppStatus;
         return {
@@ -36,5 +31,7 @@ export class WhatsAppController {
         };
       })
     );
+    void this.initializeWhatsAppClientUseCase.execute({ userId });
+    return observable;
   }
 }

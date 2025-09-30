@@ -1,128 +1,92 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import { useAuthStore } from '../store/auth.store';
+import { useNavigate } from 'react-router-dom';
+import { useSSE } from '../hooks/useSSE';
+import { QRCodeSVG } from 'qrcode.react';
 import { http } from '../http/httpClient';
 
-type ConnectResponse = { status: 'code_requested' };
-type SignInResponse =
-  | { status: 'ready' }
-  | { status: 'invalid_code' }
-  | { status: 'invalid_2fa_password' };
+interface QrResponse {
+  status: 'qr' | 'ready' | 'error' | 'connecting' | 'password';
+  hint?: string;
+  qrCode?: string;
+  sessionId?: string;
+}
 
 export function TelegramConnectPage() {
-  const [step, setStep] = useState<'phone' | 'code' | 'ready'>('phone');
-  const [phone, setPhone] = useState('');
-  const [code, setCode] = useState('');
+  const [status, setStatus] = useState<QrResponse['status']>('connecting');
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { user, token } = useAuthStore();
+  const navigate = useNavigate();
 
-  const onSubmitPhone = async (e: FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    if (!phone) return;
-    setLoading(true);
-    try {
-      const res = await http.post('/v1/telegram/connect', { phone });
-      const data = res.data as ConnectResponse;
-      if (data.status === 'code_requested') {
-        setStep('code');
-      }
-    } catch (err: any) {
-      const msg = err?.response?.data?.message ?? 'Falha ao solicitar código';
-      setError(msg);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (!user?.id) {
+      navigate('/login');
     }
-  };
+  }, [user?.id, navigate]);
 
-  const onSubmitCode = async (e: FormEvent) => {
+  const { data, error } = useSSE<QrResponse>(`http://localhost:3000/api/v1/telegram/connect/${user?.id}`, ['telegram.status']);
+
+  useEffect(() => {
+    if (data?.qrCode) {
+      setQrDataUrl(data.qrCode);
+    } else {
+      setQrDataUrl(null);
+    }
+    setStatus(data?.status ?? 'connecting');
+  }, [data]);
+
+  if (error) {
+    return <div>Error: {JSON.stringify(error)}</div>;
+  }
+
+  const handleSubmitPassword = async (e: FormEvent) => {
     e.preventDefault();
-    setError(null);
-    if (!phone || !code) return;
-    setLoading(true);
-    try {
-      const res = await http.post('/v1/telegram/signin', {
-        phone,
-        code,
-        password: password || undefined,
+    if (!data?.sessionId) return;
+    if (password) {
+      await http.post(`/v1/telegram/submit-password`, {
+        password,
+        sessionId: data?.sessionId,
       });
-      const data = res.data as SignInResponse;
-      if (data.status === 'ready') {
-        setStep('ready');
-      } else if (data.status === 'invalid_code') {
-        setError('Código inválido.');
-      } else if (data.status === 'invalid_2fa_password') {
-        setError('Senha 2FA incorreta.');
-      }
-    } catch (err: any) {
-      const msg = err?.response?.data?.message ?? 'Falha ao entrar no Telegram';
-      setError(msg);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <div className="mx-auto max-w-md p-6">
+    <div className="mx-auto max-w-lg p-6">
       <h1 className="text-2xl font-semibold mb-4">Conexão com Telegram</h1>
 
-      {step === 'phone' && (
-        <form onSubmit={onSubmitPhone} className="space-y-4">
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium">Telefone</label>
-            <input
-              id="phone"
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mt-1 w-full rounded border p-2"
-            />
-          </div>
-          {error && <div role="alert" className="text-red-600 text-sm">{error}</div>}
-          <button
-            type="submit"
-            disabled={loading || !phone}
-            className="w-full rounded bg-black text-white p-2 disabled:opacity-50"
-          >
-            {loading ? 'Enviando...' : 'Continuar'}
-          </button>
-        </form>
+      {status === 'connecting' && (
+        <p className="text-gray-700">Iniciando cliente...</p>
       )}
 
-      {step === 'code' && (
-        <form onSubmit={onSubmitCode} className="space-y-4">
-          <div>
-            <label htmlFor="code" className="block text-sm font-medium">Código</label>
-            <input
-              id="code"
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="mt-1 w-full rounded border p-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium">Senha 2FA</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded border p-2"
-            />
-          </div>
-          {error && <div role="alert" className="text-red-600 text-sm">{error}</div>}
-          <button
-            type="submit"
-            disabled={loading || !code}
-            className="w-full rounded bg-black text-white p-2 disabled:opacity-50"
-          >
-            {loading ? 'Entrando...' : 'Entrar no Telegram'}
-          </button>
-        </form>
+      {status === 'qr' && (
+        qrDataUrl
+        ? (<div>
+            <p className="mb-2 text-gray-700">Aguardando leitura do QR code...</p>
+            {qrDataUrl && (
+              <QRCodeSVG value={qrDataUrl} size={256} level='H'/>
+            )}
+          </div>) 
+        : (<p className="mb-2 text-gray-700">Erro ao gerar QR code...</p>)
       )}
 
-      {step === 'ready' && (
-        <div className="text-green-700">Conectado ao Telegram com sucesso!</div>
+      {status === 'password' && (
+          <form onSubmit={handleSubmitPassword}>
+            <div>
+              <p className="mb-2 text-gray-700">Senha 2FA do Telegram</p>
+              <input type="password" className="w-full p-2 border border-gray-300 rounded-md" onChange={(e) => setPassword(e.target.value)}/>
+              <p className="text-gray-700">{data?.hint}</p>
+            </div>
+            <button className="w-full rounded bg-black text-white p-2 disabled:opacity-50" type="submit">Enviar</button>
+          </form>
+        )}
+
+      {status === 'ready' && (
+        <div className="text-green-700">Conectado com sucesso!</div>
+      )}
+
+      {status === 'error' && (
+        <div className="text-red-700">{error ?? 'Erro desconhecido'}</div>
       )}
     </div>
   );

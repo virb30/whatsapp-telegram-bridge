@@ -1,44 +1,55 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, MessageEvent, Param, Post, Req, Sse, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt.guard';
-import { ConnectTelegramUseCase } from 'src/core/telegram/application/use-cases/connect/connect.use-case';
-import { SignInTelegramUseCase } from 'src/core/telegram/application/use-cases/sign-in/sign-in.use-case';
+import { InitializeTelegramClientUseCase } from '../../core/telegram/application/use-cases/initialize-client/initialize-client.use-case';
+import { fromEvent, map } from 'rxjs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { TelegramStatus } from '../../core/telegram/application/interfaces/telegram.service';
+import { AuthenticatedRequest } from '../auth/auth.types';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { SignInTelegramUseCase } from '../../core/telegram/application/use-cases/sign-in/sign-in.use-case';
 
-interface AuthenticatedRequest {
-  user: { userId: string };
-}
+class SignInTelegramInputDto {
+  @IsString()
+  @IsNotEmpty()
+  sessionId!: string;
 
-class ConnectTelegramDto {
-  phone!: string;
-}
-
-class SignInTelegramDto {
-  phone!: string;
-  code!: string;
-  password?: string;
+  @IsString()
+  @IsNotEmpty()
+  password!: string;
 }
 
 @Controller('telegram')
 export class TelegramController {
   constructor(
-    private readonly connectUseCase: ConnectTelegramUseCase,
+    private readonly initializeClient: InitializeTelegramClientUseCase,
     private readonly signInUseCase: SignInTelegramUseCase,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('connect')
-  async connect(@Req() req: AuthenticatedRequest, @Body() body: ConnectTelegramDto) {
-    const userId: string = req.user.userId;
-    return await this.connectUseCase.execute({ userId, phone: body.phone });
+  @Sse('connect/:userId')
+  connect(@Param('userId') userId: string) {
+    const observable = fromEvent(this.eventEmitter, 'telegram.status').pipe(
+      map<unknown, MessageEvent>((args: unknown) => {
+        console.log('telegram.status', args);
+        const data = args as TelegramStatus;
+        return {
+          data,
+          type: 'telegram.status',
+        };
+      })
+    );
+    void this.initializeClient.execute({ userId });
+    return observable;
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('signin')
-  async signIn(@Req() req: AuthenticatedRequest, @Body() body: SignInTelegramDto) {
+  @Post('submit-password')
+  signIn(@Req() req: AuthenticatedRequest, @Body() body: SignInTelegramInputDto) {
     const userId: string = req.user.userId;
-    return await this.signInUseCase.execute({
+    return this.signInUseCase.execute({
       userId,
-      phone: body.phone,
-      code: body.code,
+      sessionId: body.sessionId,
       password: body.password,
     });
   }

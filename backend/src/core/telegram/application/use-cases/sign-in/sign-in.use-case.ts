@@ -1,28 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  TELEGRAM_SERVICE,
-  type TelegramServiceInterface,
-} from '../../interfaces/telegram.service';
 
-export interface SignInTelegramInputDto {
-  readonly userId: string;
-  readonly phone: string;
-  readonly code: string;
-  readonly password?: string;
-}
+import { SignInTelegramInputDto } from './sign-in.input';
+import { TELEGRAM_SERVICE, TelegramServiceInterface } from '../../interfaces/telegram-service.interface';
 
 @Injectable()
 export class SignInTelegramUseCase {
   constructor(
     @Inject(TELEGRAM_SERVICE)
-    private readonly telegram: TelegramServiceInterface,
+    private readonly telegramService: TelegramServiceInterface,
   ) {}
 
-  async execute(input: SignInTelegramInputDto) {
-    return await this.telegram.signIn({
+  execute(input: SignInTelegramInputDto) {
+    return this.telegramService.submitPassword({
+      sessionId: input.sessionId,
       userId: input.userId,
-      phone: input.phone,
-      code: input.code,
       password: input.password,
     });
   }

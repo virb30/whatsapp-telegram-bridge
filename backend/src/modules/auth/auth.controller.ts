@@ -14,6 +14,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.CREATED)
   async login(@Body() body: LoginDto) {
+    console.log('login controller');
     return this.auth.execute(body.email, body.password);
   }
 

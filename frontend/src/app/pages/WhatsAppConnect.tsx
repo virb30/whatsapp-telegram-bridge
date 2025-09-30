@@ -21,7 +21,7 @@ export function WhatsAppConnectPage() {
     }
   }, [user?.id, navigate]);
 
-  const { data, error, loading } = useSSE<QrResponse>(`http://localhost:3000/api/v1/whatsapp/status/${user?.id}`);
+  const { data, error } = useSSE<QrResponse>(`http://localhost:3000/api/v1/whatsapp/status/${user?.id}`, ['whatsapp.status']);
 
   useEffect(() => {
     if (data?.qrCode) {
@@ -31,44 +31,6 @@ export function WhatsAppConnectPage() {
     }
     setStatus(data?.status ?? 'connecting');
   }, [data]);
-
-  // useEffect(() => {
-  //   let interval: number | null = null;
-
-  //   const fetchQr = async () => {
-  //     try {
-  //       const res = await http.get('/v1/whatsapp/qr');
-  //       const data = res.data as QrResponse;
-  //       setStatus(data.status);
-  //       console.log(data);
-  //       if (data.status === 'qr') {
-  //         // Se já vier em data URL, usa direto; caso contrário, assume PNG base64
-  //         if (data.qrCode && data.qrCode.startsWith('data:image')) {
-  //           setQrDataUrl(data.qrCode);
-  //         } else if (data.qrCode) {
-  //           setQrDataUrl(`data:image/png;base64,${data.qrCode}`);
-  //         }
-  //       } else if (data.status === 'ready') {
-  //         setQrDataUrl(null);
-  //         if (interval) {
-  //           window.clearInterval(interval);
-  //           interval = null;
-  //         }
-  //       }
-  //     } catch (e: any) {
-  //       setError(e?.response?.data?.message ?? 'Falha ao obter QR code');
-  //       setStatus('error');
-  //     }
-  //   };
-
-  //   void fetchQr();
-  //   // polling leve até conectado
-  //   interval = window.setInterval(fetchQr, 4000);
-
-  //   return () => {
-  //     if (interval) window.clearInterval(interval);
-  //   };
-  // }, []);
 
   if (error) {
     return <div>Error: {JSON.stringify(error)}</div>;
